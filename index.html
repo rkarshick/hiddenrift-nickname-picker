@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HiddenRift Nickname Picker</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <video class="bg-video" autoplay muted loop playsinline>
+      <!-- Optional: replace with your own mp4 later -->
+      <source src="./rift.mp4" type="video/mp4" />
+    </video>
+
+    <div class="overlay"></div>
+
+    <main class="page">
+      <section class="card">
+        <header class="header">
+          <h1>HiddenRift Nickname Picker</h1>
+          <p class="sub">
+            Pick something fun. Don’t worry — you can change it later.
+          </p>
+        </header>
+
+        <div class="controls">
+          <button id="refreshBtn" class="btn primary">Refresh</button>
+          <button id="copyBtn" class="btn" disabled>Copy Selected</button>
+        </div>
+
+        <div id="nicknameGrid" class="grid" aria-live="polite"></div>
+
+        <div class="selected">
+          <span class="label">Selected:</span>
+          <span id="selectedName" class="value">—</span>
+        </div>
+
+        <footer class="footer">
+          <button id="shareBtn" class="btn" disabled>Share</button>
+          <a class="link" href="#" id="exportBtn">Export as JSON</a>
+        </footer>
+      </section>
+
+      <div id="pulse" class="pulse" aria-hidden="true"></div>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
