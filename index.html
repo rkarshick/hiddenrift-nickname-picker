@@ -1,49 +1,41 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Can U Xcape Team Name Picker</title>
-    <link rel="stylesheet" href="./styles.css" />
-  </head>
-  <body>
-    <video class="bg-video" autoplay muted loop playsinline>
-      <!-- Optional: replace with your own mp4 later -->
-      <source src="./rift.mp4" type="video/mp4" />
-    </video>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Can U Xcape Team Name Generator</title>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+  <main class="wrap">
+    <!-- PICK SCREEN -->
+    <section id="screenPick" class="card">
+      <h1 class="title">Can U Xcape Team Name Generator</h1>
+      <p class="sub">Pick a team name (Adjective + plural noun). Refresh if you want three new ones.</p>
 
-    <div class="overlay"></div>
+      <div id="choices" class="choices"></div>
 
-    <main class="page">
-      <section class="card">
-        <header class="header">
-          <h1>Can U Xcape Team Name Picker</h1>
-          <p class="sub">
-            Pick a Teamname. Refresh for more choices.
-          </p>
-        </header>
+      <div class="actions">
+        <button id="refreshBtn" class="btn btn-secondary" type="button">Refresh</button>
+      </div>
+    </section>
 
-        <div class="controls">
-          <button id="refreshBtn" class="btn primary">Refresh</button>
-          <button id="copyBtn" class="btn" disabled>Copy Selected</button>
-        </div>
+    <!-- CONFIRM SCREEN -->
+    <section id="screenConfirm" class="card hidden">
+      <h1 class="title">Locked In ✅</h1>
+      <p class="sub">Nice one!</p>
 
-        <div id="nicknameGrid" class="grid" aria-live="polite"></div>
+      <div class="result">
+        <div class="result-label">Your team name:</div>
+        <div id="finalName" class="result-name">—</div>
+      </div>
 
-        <div class="selected">
-          <span class="label">Selected:</span>
-          <span id="selectedName" class="value">—</span>
-        </div>
+      <div class="actions">
+        <button id="restartBtn" class="btn btn-primary" type="button">Restart</button>
+      </div>
+    </section>
+  </main>
 
-        <footer class="footer">
-          <button id="shareBtn" class="btn" disabled>Share</button>
-          <a class="link" href="#" id="exportBtn">Export as JSON</a>
-        </footer>
-      </section>
-
-      <div id="pulse" class="pulse" aria-hidden="true"></div>
-    </main>
-
-    <script src="./app.js"></script>
-  </body>
+  <script src="app.js"></script>
+</body>
 </html>
