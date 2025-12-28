@@ -17,12 +17,12 @@ const ADJECTIVES = [
   "Profound","Invisable","Rebel","Messy","Ultimate","Valiant","Annoying","Brave",
   "Kind","Quiet","Gaming","Noob","Adventerous","Small","Stoked","Expired","Broken","Burnt","Turnt",
   "Ugly","Simping","Censored","Sour","Wealthy","Shook","Vindicated","Bizarre","Strange","Unusual",
-  "Curious","Extraordinary","Eccentric","Absurd","Strongest","Chunky",
+  "Curious","Extraordinary","Eccentric","Absurd","Strongest","Chunky", "Big", "Smelly", "Ultimate",
 ];
 
 // Group/team nouns (should NOT get pluralized again)
 const DO_NOT_PLURALIZE = new Set([
-  "Cult","Overlords","Squad","Crew","Council","Coven","Clan","Guild","Horde","Mob",
+  "Cult","Overlords","Squad","Crew","Council","Pack","Clan","Guild","Horde","Mob",
   "Legion","Pack","Swarm","Gang","Alliance","Cartel","Syndicate","Cabal","Order",
   "Party","Tribe","Collective","Clique","Posse","Unit","Regime","Brotherhood","Sisterhood"
 ]);
@@ -84,10 +84,10 @@ const NOUNS = [
 
   // Trendy / Gen Z-ish nouns (phrases allowed)
   "Rizzler","Main Character","Side Quest","Glow Up","Vibe","Vibe Check","NPC","Meme",
-  "Sigma","GigaChad","Skibidi","Wojak","Chad","Goblin Mode","Gremlin","Chaos Gremlin",
+  "Sigma","GigaChad","Skibidi","Chad","Goblin Mode","Gremlin","Chaos Gremlin",
   "Braincell","Goober","Lore","Plot Twist","Skill Issue","Touch Grass",
   "Snack","Slay","W","L","Yap","Yapper","Mood","Delulu","Ick",
-  "Yeet","Drip","Aura","Tea Spiller","Receipts","Hot Take","Cringe","Based",
+  "Yeet","Drip","Receipts","Hot Take","Cringe","Based",
 
   // Group/team nouns (do-not-pluralize list handles these)
   "Cult","Overlords","Squad","Crew","Council","Coven","Clan","Guild","Horde","Mob",
@@ -96,7 +96,7 @@ const NOUNS = [
 
   // Family / people
   "Mom","Dad","Cousin","Uncle","Aunt","Grandma","Grandpa","Nana","Papa",
-  "Sibling","Brother","Sister","Twin","Stepdad","Stepmom","Stepbrother","Stepsister",
+  "Sibling","Brother","Sister","Twin",]
   "Nephew","Niece","Godmother","Godfather",
   "Roommate","Neighbor","Bestie","BFF","Frenemy",
   "Babysitter","Chaperone","Drama Kid","Band Kid","Gym Bro","Cat Mom","Dog Dad",
