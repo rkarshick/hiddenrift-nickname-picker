@@ -7,23 +7,38 @@
   <link rel="stylesheet" href="styles.css"/>
 </head>
 <body>
+  <!-- Optional background video (drop rift.mp4 in same folder). If you don’t want video, delete this block. -->
+  <video class="bg-video" autoplay muted loop playsinline>
+    <source src="rift.mp4" type="video/mp4" />
+  </video>
+  <div class="bg-overlay"></div>
+
   <main class="wrap">
-    <!-- PICK SCREEN -->
+    <!-- Pulsar flash overlay -->
+    <div id="pulsar" class="pulsar hidden"></div>
+
+    <!-- SCREEN 1 -->
     <section id="screenPick" class="card">
       <h1 class="title">Can U Xcape Team Name Generator</h1>
-      <p class="sub">Pick a team name (Adjective + plural noun). Refresh if you want three new ones.</p>
+      <p class="sub">Pick one of these 3. Refresh if you want a new trio.</p>
 
       <div id="choices" class="choices"></div>
 
+      <div class="picked-row">
+        <div class="picked-label">Selected:</div>
+        <div id="pickedName" class="picked-name">—</div>
+      </div>
+
       <div class="actions">
         <button id="refreshBtn" class="btn btn-secondary" type="button">Refresh</button>
+        <button id="submitBtn" class="btn btn-primary" type="button" disabled>Submit</button>
       </div>
     </section>
 
-    <!-- CONFIRM SCREEN -->
+    <!-- SCREEN 2 -->
     <section id="screenConfirm" class="card hidden">
       <h1 class="title">Locked In ✅</h1>
-      <p class="sub">Nice one!</p>
+      <p class="sub">Nice one.</p>
 
       <div class="result">
         <div class="result-label">Your team name:</div>
@@ -31,7 +46,7 @@
       </div>
 
       <div class="actions">
-        <button id="restartBtn" class="btn btn-primary" type="button">Restart</button>
+        <button id="restartBtn" class="btn btn-secondary" type="button">Restart</button>
       </div>
     </section>
   </main>
