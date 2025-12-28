@@ -44,6 +44,27 @@ const NOUNS = [
   "Cult","Overlords","Squad","Crew","Council","Coven","Clan","Guild","Horde","Mob",
   "Legion","Pack","Swarm","Gang","Alliance","Cartel","Syndicate","Cabal","Order",
   "Party","Tribe","Collective","Clique","Posse","Unit","Regime","Brotherhood","Sisterhood"
+
+  //Family nouns
+  "Mom","Dad","Cousin","Uncle","Aunt","Grandma","Grandpa","Nana","Papa",
+  "Sibling","Brother","Sister","Twin","Stepdad","Stepmom","Stepbrother","Stepsister",
+  "Nephew","Niece","Godmother","Godfather",
+  "Roommate","Neighbor","Bestie","BFF","Frenemy",
+  "Babysitter","Chaperone","Drama Kid","Band Kid","Gym Bro","Cat Mom","Dog Dad",
+  "Snack Dealer","Chaos Child","Legend","Goober","Gremlin","Sleepyhead","Yapper"
+
+//Titles
+  "King","Queen","Prince","Princess","Duke","Duchess","Baron","Baroness",
+  "Emperor","Empress","Warlord","Overlord","Supreme Leader",
+  "Captain","Commander","General","Marshal","Admiral",
+  "Knight","Paladin","Samurai","Viking","Gladiator","Mercenary",
+  "Nomad","Raider","Ranger","Assassin","Bandit","Outlaw","Pirate",
+  "Wizard","Sorcerer","Witch","Warlock","Alchemist","Oracle","Shaman",
+  "Sensei","Sage","Prophet","Monk","Cultist","Herald",
+  "Boss","Big Boss","Final Boss","Mini Boss","NPC","Main Character",
+  "Chosen One","Gatekeeper","Time Traveler","Rift Walker","Void Caller"
+];
+
 ];
 
 
