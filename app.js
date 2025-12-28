@@ -65,8 +65,6 @@ const NOUNS = [
   "Chosen One","Gatekeeper","Time Traveler","Rift Walker","Void Caller"
 ];
 
-];
-
 
 // DOM
 const screenPick = document.getElementById("screenPick");
