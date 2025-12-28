@@ -20,20 +20,29 @@ const ADJECTIVES = [
 ];
 
 const NOUNS = [
-  "Couch","Pillow","Spoon","Kiwi","Rock","Banana","Pie","Monk","Lamp","Glove",
-  "Toaster","Shoe","Carpet","Stapler","Mirror","Book","Emu","Bicycle","Desk","Chair",
-  "Bed","Fridge","Puppet","Hat","Bacon","Bagel","Backpack","Nacho","Glasses","Cup",
-  "Key","Burrito","Pen","Baddie","Candy","Umbrella","Watch","Camera","Guitar","Drum",
-  "Avenger","Clock","Hammer","Nail","Screwdriver","Wrench","Toast","Smudge","Glue","HedgeHog",
-  "Hulk","Highlighter","Otter","Cat King","Hero","Envelope","Sloth","Calculator","Toilet",
-  "Litter Box","Eraser","Chalk","Warrior","Badger","Fish","Newspaper","Apple","Hamster","Globe",
-  "Mailman","Flashlight","Tent","Sleeping Bag","Garter Snake","Sunglasses","Jacket","Boots","Scarf","Beanie",
-  "Belt","Bracelet","Necklace","Earrings","Ring","Tie","Headphones","Bulb","Fisherman","Drone",
-  "Zombie","Dancer","Sunflower","Earwig","Slapper","Ninja","Dog Catcher","Mouse","Avacodo","Wound","Dad",
-  "Mom","Sparrow","Kettle","Coffee","Tea","Sugar","Salt","Pepper","Spice","Oil","Vinegar","Sauce",
-  "Butter","Cheese","Milk","Juice","Water","Soda","Gum","Popcorn","Chips",
-  "Pretzel","Corn Dog","Bestie","Vortex","Panda","Bull","Penguin","Bee","Stinger","Dip","Bunny","Lunchlady",
-  "Overlord","Sensei","Draggon","Knight","Bandit","Clown","Cake","Rascal"
+  // Food / snack chaos
+  "Taco","Burrito","Nacho","Pizza","Bagel","Donut","Pretzel","Corn Dog","Waffle","Pancake",
+  "Cupcake","Brownie","Cookie","Pickle","Nugget","Dumpling","Ramen","Sushi","Hot Sauce","Milkshake",
+
+  // Animals / creatures
+  "Raccoon","Possum","Capybara","Axolotl","Otter","Panda","Penguin","Goose","Llama","Alpaca",
+  "Frog","Cobra","Shark","Octopus","Giraffe","Koala","Hamster","Ferret","Sloth","Chameleon",
+
+  // Fantasy / vibe nouns
+  "Goblin","Wizard","Knight","Dragon","Vampire","Zombie","Ninja","Pirate","Bard","Witch",
+  "Overlord","Bandit","Hero","Warrior","Vortex","Phantom","Cosmonaut","Time Traveler","Gladiator","Rascal",
+
+  // Internet / meme / trendy
+  "Meme Lord","Influencer","Streamer","Gamer","Noob","Sweat","Tryhard","Bestie","Baddie","Main Character",
+  "NPC","Hacker","Speedrunner","Emote","Clout Goblin","Keyboard Warrior","Chad","Gremlin","Rizzler","Chaos Gremlin",
+
+  // Random funny objects (not office-y)
+  "Rubber Duck","Beanie","Sunglasses","Boot","Helmet","Trophy","Lantern","Cannon","Jetpack","Gadget",
+  "Boomerang","Disco Ball","Yo-Yo","Skateboard","Hoverboard","Magic Wand","Portal","Goggles","Cape","Confetti",
+
+  // Weird group nouns
+  "Cult","Squad","Crew","Mob","Horde","Pack","Swarm","Gang","Tribe","Coven",
+  "Council","Alliance","Legion","Army","Party","Clique","Guild","Order","Wrecking Crew","Dream Team",
 ];
 
 // ---- DOM ----
