@@ -8,10 +8,11 @@
 </head>
 <body>
   <main class="wrap">
-    <!-- PICK SCREEN -->
-    <section id="screenPick" class="card">
+
+    <!-- SCREEN 1: PICK -->
+    <section id="pickScreen" class="card">
       <h1 class="title">Can U Xcape Team Name Generator</h1>
-      <p class="sub">Pick a team name (Adjective + plural noun). Refresh if you want three new ones.</p>
+      <p class="sub">Pick a team name. Refresh to get three new options.</p>
 
       <div id="choices" class="choices"></div>
 
@@ -20,10 +21,10 @@
       </div>
     </section>
 
-    <!-- CONFIRM SCREEN -->
-    <section id="screenConfirm" class="card hidden">
+    <!-- SCREEN 2: CONFIRM -->
+    <section id="confirmScreen" class="card" style="display:none;">
       <h1 class="title">Locked In ✅</h1>
-      <p class="sub">Nice one!</p>
+      <p class="sub">Nice one.</p>
 
       <div class="result">
         <div class="result-label">Your team name:</div>
@@ -34,6 +35,7 @@
         <button id="restartBtn" class="btn btn-primary" type="button">Restart</button>
       </div>
     </section>
+
   </main>
 
   <script src="app.js"></script>
