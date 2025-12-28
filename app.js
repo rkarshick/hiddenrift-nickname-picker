@@ -10,14 +10,14 @@ const ADJECTIVES = [
   "Wicked","Awesome","Brutal","Chill","Cool","Dynamic","Electric","Fabulous","Glam","Groovy",
   "Hilarious","Hyper","Jazzy","Killer","Lively","Mad","Neon","Outrageous","Pumped","Quirky",
   "Raging","Sassy","Spicy","Thrilling","Unreal","Viral","Xtreme","Youthful","Velvet","Breezy",
-  "Cheeky","Dazzling","Energetic","Fiery","Gritty","Illuminated","Jolly","Kooky","Luminous",
+  "Cheeky","Dazzling","Energetic","Fiery","Gritty","Illuminated","Jolly","Crazed","Abusive",
   "Mighty","Nimble","Psyched","Wonderful","Riot","Spunky","Turbo","Ultra","Vivid","Whacky",
-  "Rubber","Blazing","Cosmic","Galactic","Kinetic","Mystic","Radiant","Stellar","Swirling","Expensive",
-  "Soft","Big","Drifting","Echoing","Fluxing","Glowing","Hazey","Igniting","Jeting","Luminary",
+  "Darth","Blazing","Cosmic","Galactic","Kinetic","Mystic","Radiant","Stellar","Swirling","Expensive",
+  "Soft","Big","Drifting","Echoing","Fluxing","Glowing","Sleepy","Igniting","Jeting","Broken",
   "Profound","Invisable","Rebel","Messy","Ultimate","Valiant","Annoying","Brave",
   "Kind","Quiet","Gaming","Noob","Adventerous","Small","Stoked","Expired","Broken","Burnt","Turnt",
   "Ugly","Simping","Censored","Sour","Wealthy","Shook","Vindicated","Bizarre","Strange","Unusual",
-  "Curious","Extraordinary","Eccentric","Absurd","Strongest","Chunky","Smelly","Ultimate"
+  "Curious","Extraordinary","Eccentric","Absurd","Strongest","Chunky","Smelly","Ultimate","Limping"
 ];
 
 // Group/team nouns (should NOT get pluralized again)
@@ -75,11 +75,11 @@ const NOUNS = [
   "Otter","Cat King","Hero","Sloth","Toilet",
   "Litter Box","Warrior","Badger","Fish","Apple","Hamster","Globe",
   "Mailman","Flashlight","Tent","Sleeping Bag","Garter Snake","Jacket","Boots","Scarf","Beanie",
-  "Belt","Bracelet","Necklace","Earring","Ring","Tie","Headphones","Bulb","Fisherman","Drone",
+  "Belt","Bracelet","Necklace","Earring","Ring","Tie","Headphones","Turnip","Fisherman","Drone",
   "Zombie","Dancer","Sunflower","Earwig","Slapper","Ninja","Dog Catcher","Mouse","Avocado",
   "Sparrow","Kettle","Coffee","Tea","Sugar","Salt","Pepper","Spice","Oil","Vinegar","Sauce",
   "Butter","Cheese","Milk","Juice","Water","Soda","Gum","Popcorn","Chips",
-  "Pretzel","Corn Dog","Vortex","Panda","Bull","Penguin","Bee","Stinger","Dip","Bunny","Lunchlady",
+  "Pretzel","Corn Dog","Vortex","Panda","Bull","Penguin","Bee","Stranger","Gamer","Bunny","Lunchlady",
   "Dragon","Knight","Bandit","Clown","Cake","Rascal",
 
   // Trendy / Gen Z-ish nouns (phrases allowed)
@@ -108,8 +108,8 @@ const NOUNS = [
   "Captain","Commander","General","Marshal","Admiral",
   "Paladin","Samurai","Viking","Gladiator","Mercenary",
   "Nomad","Raider","Ranger","Assassin","Outlaw","Pirate",
-  "Wizard","Sorcerer","Witch","Warlock","Alchemist","Oracle","Shaman",
-  "Sensei","Sage","Prophet","Monk","Cultist","Herald",
+  "Wizard","Sorcerer","Witch","Warlock","Alchemist","Oracle","Cashier",
+  "Sensei","Sage","Prophet","Monk","Manager","Herald",
   "Boss","Big Boss","Final Boss","Mini Boss",
   "Chosen One","Gatekeeper","Time Traveler","Rift Walker","Void Caller"
 ];
