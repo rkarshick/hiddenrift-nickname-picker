@@ -1,5 +1,7 @@
-// app.js — HiddenRift Team Name Picker (standalone)
-// 3 random names from ADJECTIVES + NOUNS, nouns pluralized, funny combos, refresh + select.
+// Can U Xcape Team Name Generator
+// Shows 3 choices (Adjective + plural noun) as buttons.
+// Click one => confirm screen. Restart => back to pick screen.
+// Refresh => regenerate 3 new names.
 
 const ADJECTIVES = [
   "Epic","Legendary","Savage","Rad","Wild","Dope","Crazy","Insane","Lit","Boss",
@@ -35,57 +37,14 @@ const NOUNS = [
 ];
 
 // ---- DOM ----
-const nicknameGrid = document.getElementById("nicknameGrid");
+const screenPick = document.getElementById("screenPick");
+const screenConfirm = document.getElementById("screenConfirm");
+const choicesEl = document.getElementById("choices");
 const refreshBtn = document.getElementById("refreshBtn");
-const copyBtn = document.getElementById("copyBtn");
-const shareBtn = document.getElementById("shareBtn");
-const exportBtn = document.getElementById("exportBtn");
-const selectedNameEl = document.getElementById("selectedName");
-const pulse = document.getElementById("pulse");
+const restartBtn = document.getElementById("restartBtn");
+const finalNameEl = document.getElementById("finalName");
 
-let currentSet = [];
-let selected = "";
-
-// ---- Funny modifiers (optional) ----
-const PREFIXES = [
-  "", "", "", "",               // keep most plain
-  "The",
-  "Team",
-  "Riftborn",
-  "Absolutely",
-  "Definitely",
-  "Totally",
-  "Suspiciously",
-  "Chronically",
-  "Allegedly"
-];
-
-const SUFFIXES = [
-  "", "", "", "",
-  "of Doom",
-  "of Snacks",
-  "from Accounting",
-  "of the Rift",
-  "with No Plan",
-  "but Worse",
-  "on Probation",
-  "in Disguise"
-];
-
-// ---- Pluralization helpers ----
-const IRREGULAR_PLURALS = new Map([
-  ["Mouse", "Mice"],
-  ["Goose", "Geese"],
-  ["Man", "Men"],
-  ["Woman", "Women"],
-  ["Child", "Children"],
-  ["Person", "People"],
-  ["Tooth", "Teeth"],
-  ["Foot", "Feet"],
-  ["Fish", "Fish"], // often same plural; can be "Fishes" but Fish is funnier here
-]);
-
-// Words/phrases that should not be pluralized normally (multi-word nouns)
+// ---- pluralization ----
 const PHRASE_PLURALS = new Map([
   ["Cat King", "Cat Kings"],
   ["Litter Box", "Litter Boxes"],
@@ -95,155 +54,68 @@ const PHRASE_PLURALS = new Map([
   ["Dog Catcher", "Dog Catchers"],
 ]);
 
-function pluralizeNoun(noun) {
-  // phrase override
-  if (PHRASE_PLURALS.has(noun)) return PHRASE_PLURALS.get(noun);
+const IRREGULAR_PLURALS = new Map([
+  ["Mouse", "Mice"],
+  ["Fish", "Fish"],
+]);
 
-  // irregular override (single-word)
+function pluralize(noun) {
+  if (PHRASE_PLURALS.has(noun)) return PHRASE_PLURALS.get(noun);
   if (IRREGULAR_PLURALS.has(noun)) return IRREGULAR_PLURALS.get(noun);
 
-  // basic rules
-  const lower = noun.toLowerCase();
-
-  // if ends with s, x, z, ch, sh => add es
+  // s/x/z/ch/sh => es
   if (/(s|x|z|ch|sh)$/i.test(noun)) return noun + "es";
 
   // consonant + y => ies
   if (/[bcdfghjklmnpqrstvwxyz]y$/i.test(noun)) return noun.slice(0, -1) + "ies";
 
-  // f/fe => ves (some words)
-  if (/(fe|f)$/i.test(noun) && !/(chef|roof|belief)$/i.test(lower)) {
-    // quick conservative: only for a few likely cases; most nouns here won't hit this
-    if (/(knife|life|wolf|leaf|shelf|thief|wife)$/i.test(lower)) {
-      return noun.replace(/fe$/i, "ves").replace(/f$/i, "ves");
-    }
-  }
-
   return noun + "s";
 }
 
-function pickRandom(arr) {
+function pick(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
-function playPulse() {
-  if (!pulse) return;
-  pulse.classList.remove("play");
-  void pulse.offsetWidth;
-  pulse.classList.add("play");
-}
-
-function makeTeamName() {
-  const adj = pickRandom(ADJECTIVES);
-  const noun = pickRandom(NOUNS);
-  const pluralNoun = pluralizeNoun(noun);
-
-  // Occasionally add extra silliness
-  const prefix = pickRandom(PREFIXES);
-  const suffix = pickRandom(SUFFIXES);
-
-  // Sometimes double-adjective for extra funny
-  const doubleAdjChance = Math.random();
-  let adjPart = adj;
-  if (doubleAdjChance < 0.22) {
-    const adj2 = pickRandom(ADJECTIVES);
-    // avoid exact duplicate
-    adjPart = (adj2 === adj) ? adj : `${adj} ${adj2}`;
-  }
-
-  // Format variations
-  const styleRoll = Math.random();
-  let base;
-  if (styleRoll < 0.55) {
-    base = `${adjPart} ${pluralNoun}`;
-  } else if (styleRoll < 0.80) {
-    base = `${pluralNoun} of ${adjPart}`;
-  } else {
-    base = `${adjPart} ${pluralNoun}`;
-  }
-
-  let full = base;
-  if (prefix) full = `${prefix} ${full}`;
-  if (suffix) full = `${full} ${suffix}`;
-
-  // Clean double spaces
-  return full.replace(/\s+/g, " ").trim();
+function makeName() {
+  const adj = pick(ADJECTIVES);
+  const noun = pluralize(pick(NOUNS));
+  return `${adj} ${noun}`;
 }
 
 function generateThreeUnique() {
   const set = new Set();
-  // safety loop
-  while (set.size < 3) {
-    set.add(makeTeamName());
-  }
+  while (set.size < 3) set.add(makeName());
   return Array.from(set);
 }
 
-function render() {
-  nicknameGrid.innerHTML = "";
+function renderChoices() {
+  const names = generateThreeUnique();
+  choicesEl.innerHTML = "";
 
-  currentSet.forEach((name) => {
-    const div = document.createElement("div");
-    div.className = "nick" + (name === selected ? " selected" : "");
-    div.textContent = name;
-    div.onclick = () => {
-      selected = name;
-      selectedNameEl.textContent = name;
-      copyBtn.disabled = false;
-      shareBtn.disabled = false;
-      render();
-    };
-    nicknameGrid.appendChild(div);
+  names.forEach((name) => {
+    const btn = document.createElement("button");
+    btn.className = "choice-btn";
+    btn.type = "button";
+    btn.textContent = name;
+
+    btn.addEventListener("click", () => {
+      finalNameEl.textContent = name;
+      screenPick.classList.add("hidden");
+      screenConfirm.classList.remove("hidden");
+    });
+
+    choicesEl.appendChild(btn);
   });
-
-  if (!selected) {
-    selectedNameEl.textContent = "—";
-    copyBtn.disabled = true;
-    shareBtn.disabled = true;
-  }
 }
 
-// ---- Buttons ----
-refreshBtn.onclick = () => {
-  playPulse();
-  selected = "";
-  currentSet = generateThreeUnique();
-  render();
-};
+// ---- events ----
+refreshBtn.addEventListener("click", renderChoices);
 
-copyBtn.onclick = async () => {
-  if (!selected) return;
-  await navigator.clipboard.writeText(selected);
-  alert(`Copied: ${selected}`);
-};
+restartBtn.addEventListener("click", () => {
+  screenConfirm.classList.add("hidden");
+  screenPick.classList.remove("hidden");
+  renderChoices();
+});
 
-shareBtn.onclick = async () => {
-  if (!selected) return;
-  const text = `Our HiddenRift team name: ${selected}`;
-  if (navigator.share) {
-    await navigator.share({ title: "HiddenRift Team Name", text });
-  } else {
-    await navigator.clipboard.writeText(text);
-    alert("Share not supported — copied to clipboard instead.");
-  }
-};
-
-exportBtn.onclick = (e) => {
-  e.preventDefault();
-  const blob = new Blob(
-    [JSON.stringify({ adjectives: ADJECTIVES, nouns: NOUNS }, null, 2)],
-    { type: "application/json" }
-  );
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "hiddenrift-name-lists.json";
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  URL.revokeObjectURL(url);
-};
-
-// Initial load
-currentSet = generateThreeUnique();
-render();
+// init
+renderChoices();
