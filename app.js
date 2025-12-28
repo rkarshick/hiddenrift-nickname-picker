@@ -17,7 +17,7 @@ const ADJECTIVES = [
   "Profound","Invisable","Rebel","Messy","Ultimate","Valiant","Annoying","Brave",
   "Kind","Quiet","Gaming","Noob","Adventerous","Small","Stoked","Expired","Broken","Burnt","Turnt",
   "Ugly","Simping","Censored","Sour","Wealthy","Shook","Vindicated","Bizarre","Strange","Unusual",
-  "Curious","Extraordinary","Eccentric","Absurd","Strongest","Chunky", "Big", "Smelly", "Ultimate"
+  "Curious","Extraordinary","Eccentric","Absurd","Strongest","Chunky", "Smelly", "Ultimate"
 ];
 
 // Group/team nouns (should NOT get pluralized again)
@@ -80,19 +80,19 @@ const NOUNS = [
   "Sparrow","Kettle","Coffee","Tea","Sugar","Salt","Pepper","Spice","Oil","Vinegar","Sauce",
   "Butter","Cheese","Milk","Juice","Water","Soda","Gum","Popcorn","Chips",
   "Pretzel","Corn Dog","Vortex","Panda","Bull","Penguin","Bee","Stinger","Dip","Bunny","Lunchlady",
-  "Dragon","Knight","Bandit","Clown","Cake","Rascal",
+  "Dragon","Knight","Bandit","Clown","Cake","Rascal"
 
   // Trendy / Gen Z-ish nouns (phrases allowed)
   "Rizzler","Main Character","Side Quest","Glow Up","Vibe","Vibe Check","NPC","Meme",
   "Sigma","GigaChad","Skibidi","Chad","Goblin Mode","Gremlin","Chaos Gremlin",
   "Braincell","Goober","Lore","Plot Twist","Skill Issue","Touch Grass",
   "Snack","Slay","W","L","Yap","Yapper","Mood","Delulu","Ick",
-  "Yeet","Drip","Receipts","Hot Take","Cringe","Based",
+  "Yeet","Drip","Receipts","Hot Take","Cringe","Based"
 
   // Group/team nouns (do-not-pluralize list handles these)
   "Cult","Overlords","Squad","Crew","Council","Coven","Clan","Guild","Horde","Mob",
   "Legion","Pack","Swarm","Gang","Alliance","Cartel","Syndicate","Cabal","Order",
-  "Party","Tribe","Collective","Clique","Posse","Unit","Regime","Brotherhood","Sisterhood",
+  "Party","Tribe","Collective","Clique","Posse","Unit","Regime","Brotherhood","Sisterhood"
 
   // Family / people
   "Mom","Dad","Cousin","Uncle","Aunt","Grandma","Grandpa","Nana","Papa",
@@ -100,7 +100,7 @@ const NOUNS = [
   "Nephew","Niece","Godmother","Godfather",
   "Roommate","Neighbor","Bestie","BFF","Frenemy",
   "Babysitter","Chaperone","Drama Kid","Band Kid","Gym Bro","Cat Mom","Dog Dad",
-  "Snack Dealer","Chaos Child","Legend","Sleepyhead",
+  "Snack Dealer","Chaos Child","Legend","Sleepyhead"
 
   // Titles / ranks
   "King","Queen","Prince","Princess","Duke","Duchess","Baron","Baroness",
