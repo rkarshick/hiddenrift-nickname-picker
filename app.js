@@ -17,7 +17,7 @@ const ADJECTIVES = [
   "Profound","Invisable","Rebel","Messy","Ultimate","Valiant","Annoying","Brave",
   "Kind","Quiet","Gaming","Noob","Adventerous","Small","Stoked","Expired","Broken","Burnt","Turnt",
   "Ugly","Simping","Censored","Sour","Wealthy","Shook","Vindicated","Bizarre","Strange","Unusual",
-  "Curious","Extraordinary","Eccentric","Absurd","Strongest","Chunky", "Big", "Smelly", "Ultimate",
+  "Curious","Extraordinary","Eccentric","Absurd","Strongest","Chunky", "Big", "Smelly", "Ultimate"
 ];
 
 // Group/team nouns (should NOT get pluralized again)
