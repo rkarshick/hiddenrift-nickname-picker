@@ -96,7 +96,7 @@ const NOUNS = [
 
   // Family / people
   "Mom","Dad","Cousin","Uncle","Aunt","Grandma","Grandpa","Nana","Papa",
-  "Sibling","Brother","Sister","Twin",]
+  "Sibling","Brother","Sister","Twin",
   "Nephew","Niece","Godmother","Godfather",
   "Roommate","Neighbor","Bestie","BFF","Frenemy",
   "Babysitter","Chaperone","Drama Kid","Band Kid","Gym Bro","Cat Mom","Dog Dad",
