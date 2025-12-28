@@ -17,13 +17,13 @@ const ADJECTIVES = [
   "Profound","Invisable","Rebel","Messy","Ultimate","Valiant","Annoying","Brave",
   "Kind","Quiet","Gaming","Noob","Adventerous","Small","Stoked","Expired","Broken","Burnt","Turnt",
   "Ugly","Simping","Censored","Sour","Wealthy","Shook","Vindicated","Bizarre","Strange","Unusual",
-  "Curious","Extraordinary","Eccentric","Absurd","Strongest","Chunky", "Smelly", "Ultimate"
+  "Curious","Extraordinary","Eccentric","Absurd","Strongest","Chunky","Smelly","Ultimate"
 ];
 
 // Group/team nouns (should NOT get pluralized again)
 const DO_NOT_PLURALIZE = new Set([
   "Cult","Overlords","Squad","Crew","Council","Pack","Clan","Guild","Horde","Mob",
-  "Legion","Pack","Swarm","Gang","Alliance","Cartel","Syndicate","Cabal","Order",
+  "Legion","Swarm","Gang","Alliance","Cartel","Syndicate","Cabal","Order",
   "Party","Tribe","Collective","Clique","Posse","Unit","Regime","Brotherhood","Sisterhood"
 ]);
 
@@ -80,19 +80,19 @@ const NOUNS = [
   "Sparrow","Kettle","Coffee","Tea","Sugar","Salt","Pepper","Spice","Oil","Vinegar","Sauce",
   "Butter","Cheese","Milk","Juice","Water","Soda","Gum","Popcorn","Chips",
   "Pretzel","Corn Dog","Vortex","Panda","Bull","Penguin","Bee","Stinger","Dip","Bunny","Lunchlady",
-  "Dragon","Knight","Bandit","Clown","Cake","Rascal"
+  "Dragon","Knight","Bandit","Clown","Cake","Rascal",
 
   // Trendy / Gen Z-ish nouns (phrases allowed)
   "Rizzler","Main Character","Side Quest","Glow Up","Vibe","Vibe Check","NPC","Meme",
   "Sigma","GigaChad","Skibidi","Chad","Goblin Mode","Gremlin","Chaos Gremlin",
   "Braincell","Goober","Lore","Plot Twist","Skill Issue","Touch Grass",
   "Snack","Slay","W","L","Yap","Yapper","Mood","Delulu","Ick",
-  "Yeet","Drip","Receipts","Hot Take","Cringe","Based"
+  "Yeet","Drip","Receipts","Hot Take","Cringe","Based",
 
   // Group/team nouns (do-not-pluralize list handles these)
-  "Cult","Overlords","Squad","Crew","Council","Coven","Clan","Guild","Horde","Mob",
-  "Legion","Pack","Swarm","Gang","Alliance","Cartel","Syndicate","Cabal","Order",
-  "Party","Tribe","Collective","Clique","Posse","Unit","Regime","Brotherhood","Sisterhood"
+  "Cult","Overlords","Squad","Crew","Council","Pack","Clan","Guild","Horde","Mob",
+  "Legion","Swarm","Gang","Alliance","Cartel","Syndicate","Cabal","Order",
+  "Party","Tribe","Collective","Clique","Posse","Unit","Regime","Brotherhood","Sisterhood",
 
   // Family / people
   "Mom","Dad","Cousin","Uncle","Aunt","Grandma","Grandpa","Nana","Papa",
@@ -100,7 +100,7 @@ const NOUNS = [
   "Nephew","Niece","Godmother","Godfather",
   "Roommate","Neighbor","Bestie","BFF","Frenemy",
   "Babysitter","Chaperone","Drama Kid","Band Kid","Gym Bro","Cat Mom","Dog Dad",
-  "Snack Dealer","Chaos Child","Legend","Sleepyhead"
+  "Snack Dealer","Chaos Child","Legend","Sleepyhead",
 
   // Titles / ranks
   "King","Queen","Prince","Princess","Duke","Duchess","Baron","Baroness",
@@ -129,6 +129,16 @@ const pickedNameEl = document.getElementById("pickedName");
 const finalNameEl = document.getElementById("finalName");
 const pulsarEl = document.getElementById("pulsar");
 
+// Safety: if any are missing, stop and tell you why
+const REQUIRED = {
+  screenPick, screenConfirm, choicesEl, refreshBtn, submitBtn, restartBtn, pickedNameEl, finalNameEl, pulsarEl
+};
+for (const [k, v] of Object.entries(REQUIRED)) {
+  if (!v) {
+    console.error(`[TeamNameGen] Missing element ID: ${k}. Check your HTML IDs.`);
+  }
+}
+
 let selectedName = "";
 
 
@@ -141,11 +151,8 @@ function pluralize(noun) {
   if (PHRASE_PLURALS.has(noun)) return PHRASE_PLURALS.get(noun);
   if (IRREGULAR_PLURALS.has(noun)) return IRREGULAR_PLURALS.get(noun);
 
-  // If noun ends with s/x/z/ch/sh -> add "es"
   if (/(s|x|z|ch|sh)$/i.test(noun)) return noun + "es";
-  // consonant + y -> ies
   if (/[bcdfghjklmnpqrstvwxyz]y$/i.test(noun)) return noun.slice(0, -1) + "ies";
-  // default
   return noun + "s";
 }
 
@@ -153,7 +160,6 @@ function pick(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
-// “funny combos”: small chance to double-adjective
 function makeName() {
   const adj1 = pick(ADJECTIVES);
   const rawNoun = pick(NOUNS);
@@ -180,6 +186,8 @@ function setSelected(name) {
 }
 
 function renderChoices() {
+  if (!choicesEl) return;
+
   const names = generateThreeUnique();
   choicesEl.innerHTML = "";
   setSelected("");
@@ -201,6 +209,8 @@ function renderChoices() {
 }
 
 function playPulsarThen(fn) {
+  if (!pulsarEl) { fn(); return; }
+
   pulsarEl.classList.remove("hidden");
   pulsarEl.style.animation = "none";
   // force reflow
@@ -219,26 +229,32 @@ function playPulsarThen(fn) {
    EVENTS
 ------------------------- */
 
-refreshBtn.addEventListener("click", () => {
-  playPulsarThen(() => renderChoices());
-});
-
-submitBtn.addEventListener("click", () => {
-  if (!selectedName) return;
-  playPulsarThen(() => {
-    finalNameEl.textContent = selectedName;
-    screenPick.classList.add("hidden");
-    screenConfirm.classList.remove("hidden");
+if (refreshBtn) {
+  refreshBtn.addEventListener("click", () => {
+    playPulsarThen(() => renderChoices());
   });
-});
+}
 
-restartBtn.addEventListener("click", () => {
-  playPulsarThen(() => {
-    screenConfirm.classList.add("hidden");
-    screenPick.classList.remove("hidden");
-    renderChoices();
+if (submitBtn) {
+  submitBtn.addEventListener("click", () => {
+    if (!selectedName) return;
+    playPulsarThen(() => {
+      finalNameEl.textContent = selectedName;
+      screenPick.classList.add("hidden");
+      screenConfirm.classList.remove("hidden");
+    });
   });
-});
+}
+
+if (restartBtn) {
+  restartBtn.addEventListener("click", () => {
+    playPulsarThen(() => {
+      screenConfirm.classList.add("hidden");
+      screenPick.classList.remove("hidden");
+      renderChoices();
+    });
+  });
+}
 
 // init
 renderChoices();
