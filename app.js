@@ -74,12 +74,6 @@ const IRREGULAR_PLURALS = new Map([
   ["Fish", "Fish"],
 ]);
 
-const DO_NOT_PLURALIZE = new Set([
-  "Cult","Overlords","Squad","Crew","Council","Coven","Clan","Guild","Horde","Mob",
-  "Legion","Pack","Swarm","Gang","Alliance","Cartel","Syndicate","Cabal","Order",
-  "Party","Tribe","Collective","Clique","Posse","Unit","Regime","Brotherhood","Sisterhood"
-]);
-
 
 function pluralize(noun) {
   if (DO_NOT_PLURALIZE.has(noun)) return noun;
@@ -90,6 +84,11 @@ function pluralize(noun) {
   return noun + "s";
 }
 
+const DO_NOT_PLURALIZE = new Set([
+  "Cult","Overlords","Squad","Crew","Council","Coven","Clan","Guild","Horde","Mob",
+  "Legion","Pack","Swarm","Gang","Alliance","Cartel","Syndicate","Cabal","Order",
+  "Party","Tribe","Collective","Clique","Posse","Unit","Regime","Brotherhood","Sisterhood"
+]);
 
 function pick(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
