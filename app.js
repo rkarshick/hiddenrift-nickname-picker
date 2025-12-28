@@ -67,27 +67,27 @@ const IRREGULAR_PLURALS = new Map([
 
 const NOUNS = [
   // Fun objects / food / chaos (NON-office)
-  "Couch","Pillow","Spoon","Kiwi","Rock","Banana","Pie","Lamp","Glove",
-  "Toaster","Shoe","Carpet","Mirror","Book","Emu","Bicycle","Chair",
-  "Bed","Fridge","Puppet","Hat","Bacon","Bagel","Backpack","Nacho","Cup",
-  "Key","Burrito","Candy","Umbrella","Watch","Camera","Guitar","Drum",
+  "Couch","Pillow","Party Animal","Kiwi","Rock","Banana","Pie","Lamp","Glove",
+  "Toaster","Clown","Carpet","Bookworm","Book","Emu","Bicycle","Chair",
+  "Bed","Nugget","Puppet","Hat","Bacon","Bagel","Backpack","Nacho","Cup",
+  "Key","Burrito","Candy","Umbrella","Watch","Camera","Guitar","Troublemaker",
   "Clock","Hammer","Nail","Screwdriver","Wrench","Toast","Smudge","Glue","Hedgehog",
   "Otter","Cat King","Hero","Sloth","Toilet",
   "Litter Box","Warrior","Badger","Fish","Apple","Hamster","Globe",
   "Mailman","Flashlight","Tent","Sleeping Bag","Garter Snake","Jacket","Boots","Scarf","Beanie",
   "Belt","Bracelet","Necklace","Earring","Ring","Tie","Headphones","Turnip","Fisherman","Drone",
   "Zombie","Dancer","Sunflower","Earwig","Slapper","Ninja","Dog Catcher","Mouse","Avocado",
-  "Sparrow","Kettle","Coffee","Tea","Sugar","Salt","Pepper","Spice","Oil","Vinegar","Sauce",
+  "Sparrow","Kettle","Coffee","Joker","Smooth criminal","Salt","Pepper","Spice","Dude","Vinegar","Sauce",
   "Butter","Cheese","Milk","Juice","Water","Soda","Gum","Popcorn","Chips",
   "Pretzel","Corn Dog","Vortex","Panda","Bull","Penguin","Bee","Stranger","Gamer","Bunny","Lunchlady",
-  "Dragon","Knight","Bandit","Clown","Cake","Rascal",
+  "Dragon","Knight","Bandit","Clown","Hunk","Rascal",
 
   // Trendy / Gen Z-ish nouns (phrases allowed)
   "Rizzler","Main Character","Side Quest","Glow Up","Vibe","Vibe Check","NPC","Meme",
   "Sigma","GigaChad","Skibidi","Chad","Goblin Mode","Gremlin","Chaos Gremlin",
   "Braincell","Goober","Lore","Plot Twist","Skill Issue","Touch Grass",
   "Snack","Slay","W","L","Yap","Yapper","Mood","Delulu","Ick",
-  "Yeet","Drip","Receipts","Hot Take","Cringe","Based",
+  "Yeet","Drip","Receipts","Hot Take","Cringe",
 
   // Group/team nouns (do-not-pluralize list handles these)
   "Cult","Overlords","Squad","Crew","Council","Pack","Clan","Guild","Horde","Mob",
@@ -96,7 +96,7 @@ const NOUNS = [
 
   // Family / people
   "Mom","Dad","Cousin","Uncle","Aunt","Grandma","Grandpa","Nana","Papa",
-  "Sibling","Brother","Sister","Twin",
+  "Sibling","Brother","Sister","Twin", "Sherlock", "Soul sister",
   "Nephew","Niece","Godmother","Godfather",
   "Roommate","Neighbor","Bestie","BFF","Frenemy",
   "Babysitter","Chaperone","Drama Kid","Band Kid","Gym Bro","Cat Mom","Dog Dad",
