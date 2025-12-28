@@ -1,7 +1,4 @@
-// Can U Xcape Team Name Generator
-// Shows 3 choices (Adjective + plural noun) as buttons.
-// Click one => confirm screen. Restart => back to pick screen.
-// Refresh => regenerate 3 new names.
+// Can U Xcape Team Name Generator (2-screen, pulsar transition)
 
 const ADJECTIVES = [
   "Epic","Legendary","Savage","Rad","Wild","Dope","Crazy","Insane","Lit","Boss",
@@ -36,15 +33,20 @@ const NOUNS = [
   "Overlord","Sensei","Draggon","Knight","Bandit","Clown","Cake","Rascal"
 ];
 
-// ---- DOM ----
+// DOM
 const screenPick = document.getElementById("screenPick");
 const screenConfirm = document.getElementById("screenConfirm");
 const choicesEl = document.getElementById("choices");
 const refreshBtn = document.getElementById("refreshBtn");
+const submitBtn = document.getElementById("submitBtn");
 const restartBtn = document.getElementById("restartBtn");
+const pickedNameEl = document.getElementById("pickedName");
 const finalNameEl = document.getElementById("finalName");
+const pulsarEl = document.getElementById("pulsar");
 
-// ---- pluralization ----
+let selectedName = "";
+
+// phrase + irregular plural map
 const PHRASE_PLURALS = new Map([
   ["Cat King", "Cat Kings"],
   ["Litter Box", "Litter Boxes"],
@@ -53,7 +55,6 @@ const PHRASE_PLURALS = new Map([
   ["Corn Dog", "Corn Dogs"],
   ["Dog Catcher", "Dog Catchers"],
 ]);
-
 const IRREGULAR_PLURALS = new Map([
   ["Mouse", "Mice"],
   ["Fish", "Fish"],
@@ -62,13 +63,8 @@ const IRREGULAR_PLURALS = new Map([
 function pluralize(noun) {
   if (PHRASE_PLURALS.has(noun)) return PHRASE_PLURALS.get(noun);
   if (IRREGULAR_PLURALS.has(noun)) return IRREGULAR_PLURALS.get(noun);
-
-  // s/x/z/ch/sh => es
   if (/(s|x|z|ch|sh)$/i.test(noun)) return noun + "es";
-
-  // consonant + y => ies
   if (/[bcdfghjklmnpqrstvwxyz]y$/i.test(noun)) return noun.slice(0, -1) + "ies";
-
   return noun + "s";
 }
 
@@ -76,10 +72,17 @@ function pick(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
+// “funny combos”: add a tiny chance to double-adjective (still from your list)
 function makeName() {
-  const adj = pick(ADJECTIVES);
+  const adj1 = pick(ADJECTIVES);
   const noun = pluralize(pick(NOUNS));
-  return `${adj} ${noun}`;
+
+  const roll = Math.random();
+  if (roll < 0.18) {
+    const adj2 = pick(ADJECTIVES);
+    if (adj2 !== adj1) return `${adj1} ${adj2} ${noun}`;
+  }
+  return `${adj1} ${noun}`;
 }
 
 function generateThreeUnique() {
@@ -88,9 +91,16 @@ function generateThreeUnique() {
   return Array.from(set);
 }
 
+function setSelected(name) {
+  selectedName = name;
+  pickedNameEl.textContent = name || "—";
+  submitBtn.disabled = !name;
+}
+
 function renderChoices() {
   const names = generateThreeUnique();
   choicesEl.innerHTML = "";
+  setSelected("");
 
   names.forEach((name) => {
     const btn = document.createElement("button");
@@ -99,22 +109,52 @@ function renderChoices() {
     btn.textContent = name;
 
     btn.addEventListener("click", () => {
-      finalNameEl.textContent = name;
-      screenPick.classList.add("hidden");
-      screenConfirm.classList.remove("hidden");
+      // clear selected state
+      Array.from(choicesEl.querySelectorAll(".choice-btn")).forEach(b => b.classList.remove("selected"));
+      btn.classList.add("selected");
+      setSelected(name);
     });
 
     choicesEl.appendChild(btn);
   });
 }
 
-// ---- events ----
-refreshBtn.addEventListener("click", renderChoices);
+function playPulsarThen(fn) {
+  // restart animation by toggling node
+  pulsarEl.classList.remove("hidden");
+  pulsarEl.style.animation = "none";
+  // force reflow
+  // eslint-disable-next-line no-unused-expressions
+  pulsarEl.offsetHeight;
+  pulsarEl.style.animation = "";
+
+  // run after animation finishes
+  setTimeout(() => {
+    pulsarEl.classList.add("hidden");
+    fn();
+  }, 650);
+}
+
+// Events
+refreshBtn.addEventListener("click", () => {
+  playPulsarThen(() => renderChoices());
+});
+
+submitBtn.addEventListener("click", () => {
+  if (!selectedName) return;
+  playPulsarThen(() => {
+    finalNameEl.textContent = selectedName;
+    screenPick.classList.add("hidden");
+    screenConfirm.classList.remove("hidden");
+  });
+});
 
 restartBtn.addEventListener("click", () => {
-  screenConfirm.classList.add("hidden");
-  screenPick.classList.remove("hidden");
-  renderChoices();
+  playPulsarThen(() => {
+    screenConfirm.classList.add("hidden");
+    screenPick.classList.remove("hidden");
+    renderChoices();
+  });
 });
 
 // init
