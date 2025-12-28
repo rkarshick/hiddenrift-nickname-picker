@@ -26,7 +26,7 @@ const NOUNS = [
   "Hulk","Highlighter","Otter","Cat King","Hero","Envelope","Sloth","Calculator","Toilet",
   "Litter Box","Eraser","Chalk","Warrior","Badger","Fish","Newspaper","Apple","Hamster","Globe",
   "Mailman","Flashlight","Tent","Sleeping Bag","Garter Snake","Sunglasses","Jacket","Boots","Scarf","Beanie",
-  "Belt","Bracelet","Necklace","Earrings","Ring","Tie","Headphones","Bulb","Fisherman","Drone",
+  "Belt","Bracelet","Necklace","Earring","Ring","Tie","Headphones","Bulb","Fisherman","Drone",
   "Zombie","Dancer","Sunflower","Earwig","Slapper","Ninja","Dog Catcher","Mouse","Avocado","Wound","Dad",
   "Mom","Sparrow","Kettle","Coffee","Tea","Sugar","Salt","Pepper","Spice","Oil","Vinegar","Sauce",
   "Butter","Cheese","Milk","Juice","Water","Soda","Gum","Popcorn","Chips",
