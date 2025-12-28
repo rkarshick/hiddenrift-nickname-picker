@@ -1,130 +1,200 @@
-// Can U Xcape Team Name Generator
-// Shows 3 choices (Adjective + plural noun) as buttons.
-// Click one => confirm screen. Restart => back to pick screen.
-// Refresh => regenerate 3 new names.
+// Can U Xcape Team Name Generator (standalone)
 
+// ---------- CONFIG ----------
+const PREFIX_CHANCE = 0.28; // 28% chance to include a prefix
+const PREFIXES = ["Ultimate", "Mega", "Ultra", "Turbo", "Cosmic", "Legendary", "Hyper", "Prime", "Supreme"];
+
+// Adjectives (use yours or expand)
 const ADJECTIVES = [
-  "Epic","Legendary","Savage","Rad","Wild","Dope","Crazy","Insane","Lit","Boss",
-  "Extra","Fire","Fierce","Fresh","Fly","Funky","Hyped","Sick","Sweet","Imaginary",
-  "Wicked","Awesome","Brutal","Chill","Cool","Dynamic","Electric","Fabulous","Glam","Groovy",
-  "Hilarious","Hyper","Jazzy","Killer","Lively","Mad","Neon","Outrageous","Pumped","Quirky",
-  "Raging","Sassy","Spicy","Thrilling","Unreal","Viral","Xtreme","Youthful","Velvet","Breezy",
-  "Cheeky","Dazzling","Energetic","Fiery","Gritty","Illuminated","Jolly","Kooky","Luminous",
-  "Mighty","Nimble","Psyched","Wonderful","Riot","Spunky","Turbo","Ultra","Vivid","Whacky",
-  "Rubber","Blazing","Cosmic","Galactic","Kinetic","Mystic","Radiant","Stellar","Swirling","Expensive",
-  "Soft","Big","Drifting","Echoing","Fluxing","Glowing","Hazey","Igniting","Jeting","Luminary",
-  "Profound","Invisable","Rebel","Messy","Ultimate","Valiant","Annoying","Brave",
-  "Kind","Quiet","Gaming","Noob","Adventerous","Small","Stoked","Expired","Broken","Burnt","Turnt",
-  "Ugly","Simping","Censored","Sour","Wealthy","Shook","Vindicated","Bizarre","Strange","Unusual",
-  "Curious","Extraordinary","Eccentric","Absurd","Strongest","Chunky",
+  "Epic","Legendary","Savage","Rad","Wild","Dope","Insane","Lit","Boss","Fire",
+  "Wicked","Awesome","Chill","Electric","Groovy","Hyped","Neon","Quirky","Spicy","Unreal",
+  "Cosmic","Galactic","Kinetic","Mystic","Radiant","Stellar","Swirling","Vivid","Whacky","Turbo",
+  "Cheeky","Dazzling","Energetic","Fiery","Gritty","Jolly","Kooky","Luminous","Mighty","Nimble",
+  "Psyched","Wonderful","Riot","Spunky","Ultra","Valiant","Brave","Curious","Extraordinary","Absurd",
 ];
 
+// Nouns (funny + creatures + trendy). These should be singular phrases generally.
 const NOUNS = [
-  // Food / snack chaos
+  // Food chaos
   "Taco","Burrito","Nacho","Pizza","Bagel","Donut","Pretzel","Corn Dog","Waffle","Pancake",
   "Cupcake","Brownie","Cookie","Pickle","Nugget","Dumpling","Ramen","Sushi","Hot Sauce","Milkshake",
 
-  // Animals / creatures
+  // Creatures (more!)
   "Raccoon","Possum","Capybara","Axolotl","Otter","Panda","Penguin","Goose","Llama","Alpaca",
   "Frog","Cobra","Shark","Octopus","Giraffe","Koala","Hamster","Ferret","Sloth","Chameleon",
+  "Mantis","Narwhal","Wombat","Badger","Corgi","Pug","T-Rex","Velociraptor","Mothman","Kraken",
 
-  // Fantasy / vibe nouns
-  "Goblin","Wizard","Knight","Dragon","Vampire","Zombie","Ninja","Pirate","Bard","Witch",
-  "Overlord","Bandit","Hero","Warrior","Vortex","Phantom","Cosmonaut","Time Traveler","Gladiator","Rascal",
+  // Meme/trendy
+  "Meme Lord","Influencer","Streamer","Gamer","Noob","Tryhard","Bestie","Baddie","Main Character",
+  "NPC","Speedrunner","Emote","Clout Goblin","Rizzler","Chaos Gremlin","Goblin Mode","Snack Goblin","Lore Keeper","Vibe Wizard",
 
-  // Internet / meme / trendy
-  "Meme Lord","Influencer","Streamer","Gamer","Noob","Sweat","Tryhard","Bestie","Baddie","Main Character",
-  "NPC","Hacker","Speedrunner","Emote","Clout Goblin","Keyboard Warrior","Chad","Gremlin","Rizzler","Chaos Gremlin",
-
-  // Random funny objects (not office-y)
-  "Rubber Duck","Beanie","Sunglasses","Boot","Helmet","Trophy","Lantern","Cannon","Jetpack","Gadget",
-  "Boomerang","Disco Ball","Yo-Yo","Skateboard","Hoverboard","Magic Wand","Portal","Goggles","Cape","Confetti",
-
-  // Weird group nouns
-  "Cult","Squad","Crew","Mob","Horde","Pack","Swarm","Gang","Tribe","Coven",
-  "Council","Alliance","Legion","Army","Party","Clique","Guild","Order","Wrecking Crew","Dream Team",
+  // Random fun objects
+  "Rubber Duck","Beanie","Sunglasses","Helmet","Trophy","Lantern","Cannon","Jetpack","Boomerang","Disco Ball",
+  "Yo-Yo","Skateboard","Hoverboard","Magic Wand","Portal","Goggles","Cape","Confetti","Glitter Bomb","Moon Rock",
 ];
 
-// ---- DOM ----
-const screenPick = document.getElementById("screenPick");
-const screenConfirm = document.getElementById("screenConfirm");
+// Group nouns (DO NOT pluralize these)
+const GROUP_NOUNS = [
+  "Squad","Crew","Mob","Horde","Pack","Swarm","Gang","Tribe","Coven","Council",
+  "Alliance","Legion","Party","Clique","Guild","Order","Wrecking Crew","Dream Team",
+  "Rift Runners","Portal Patrol","Chaos Committee","Snack Council","Vibe Council","Goblin Council",
+];
+
+// ---------- DOM ----------
+const screenGenerate = document.getElementById("screen-generate");
+const screenResult = document.getElementById("screen-result");
+
 const choicesEl = document.getElementById("choices");
 const refreshBtn = document.getElementById("refreshBtn");
+const submitBtn = document.getElementById("submitBtn");
 const restartBtn = document.getElementById("restartBtn");
-const finalNameEl = document.getElementById("finalName");
+const hintText = document.getElementById("hintText");
+const resultName = document.getElementById("resultName");
 
-// ---- pluralization ----
-const PHRASE_PLURALS = new Map([
-  ["Cat King", "Cat Kings"],
-  ["Litter Box", "Litter Boxes"],
-  ["Sleeping Bag", "Sleeping Bags"],
-  ["Garter Snake", "Garter Snakes"],
-  ["Corn Dog", "Corn Dogs"],
-  ["Dog Catcher", "Dog Catchers"],
-]);
+let currentChoices = [];
+let selectedIndex = -1;
 
-const IRREGULAR_PLURALS = new Map([
-  ["Mouse", "Mice"],
-  ["Fish", "Fish"],
-]);
-
-function pluralize(noun) {
-  if (PHRASE_PLURALS.has(noun)) return PHRASE_PLURALS.get(noun);
-  if (IRREGULAR_PLURALS.has(noun)) return IRREGULAR_PLURALS.get(noun);
-
-  // s/x/z/ch/sh => es
-  if (/(s|x|z|ch|sh)$/i.test(noun)) return noun + "es";
-
-  // consonant + y => ies
-  if (/[bcdfghjklmnpqrstvwxyz]y$/i.test(noun)) return noun.slice(0, -1) + "ies";
-
-  return noun + "s";
+// ---------- HELPERS ----------
+function randInt(max) {
+  return Math.floor(Math.random() * max);
 }
 
 function pick(arr) {
-  return arr[Math.floor(Math.random() * arr.length)];
+  return arr[randInt(arr.length)];
 }
 
-function makeName() {
+function maybePrefix() {
+  return Math.random() < PREFIX_CHANCE ? pick(PREFIXES) : "";
+}
+
+// pluralize basic nouns; skip group nouns
+function pluralize(noun) {
+  // if it's a group noun (or already plural-ish phrase), return as-is
+  const isGroup = GROUP_NOUNS.includes(noun);
+  if (isGroup) return noun;
+
+  // pluralize last word in a phrase: "Rubber Duck" -> "Rubber Ducks"
+  const parts = noun.split(" ");
+  const last = parts[parts.length - 1];
+
+  const pluralLast = pluralizeWord(last);
+  parts[parts.length - 1] = pluralLast;
+  return parts.join(" ");
+}
+
+function pluralizeWord(word) {
+  const lower = word.toLowerCase();
+
+  // Don't pluralize words that already look plural
+  if (lower.endsWith("s")) return word;
+
+  // y -> ies (party -> parties) (but toy -> toys)
+  if (lower.endsWith("y") && !"aeiou".includes(lower[lower.length - 2] || "")) {
+    return word.slice(0, -1) + "ies";
+  }
+
+  // s, x, z, ch, sh -> es
+  if (
+    lower.endsWith("s") ||
+    lower.endsWith("x") ||
+    lower.endsWith("z") ||
+    lower.endsWith("ch") ||
+    lower.endsWith("sh")
+  ) {
+    return word + "es";
+  }
+
+  // f/fe -> ves (knife -> knives) (keep it minimal; not perfect)
+  if (lower.endsWith("fe")) return word.slice(0, -2) + "ves";
+  if (lower.endsWith("f")) return word.slice(0, -1) + "ves";
+
+  // default
+  return word + "s";
+}
+
+function buildTeamName() {
   const adj = pick(ADJECTIVES);
-  const noun = pluralize(pick(NOUNS));
-  return `${adj} ${noun}`;
+  const prefix = maybePrefix();
+
+  // 25% chance to use group noun
+  const useGroup = Math.random() < 0.25;
+  const baseNoun = useGroup ? pick(GROUP_NOUNS) : pick(NOUNS);
+
+  const noun = pluralize(baseNoun);
+
+  // Format: "Adjective (Prefix) PluralNoun"
+  // If prefix empty, omit it cleanly.
+  const mid = prefix ? `${prefix} ` : "";
+  return `${adj} ${mid}${noun}`.replace(/\s+/g, " ").trim();
 }
 
 function generateThreeUnique() {
   const set = new Set();
-  while (set.size < 3) set.add(makeName());
+  while (set.size < 3) set.add(buildTeamName());
   return Array.from(set);
 }
 
+// ---------- RENDER ----------
 function renderChoices() {
-  const names = generateThreeUnique();
   choicesEl.innerHTML = "";
-
-  names.forEach((name) => {
+  currentChoices.forEach((name, idx) => {
     const btn = document.createElement("button");
-    btn.className = "choice-btn";
+    btn.className = "choice" + (idx === selectedIndex ? " selected" : "");
     btn.type = "button";
-    btn.textContent = name;
+
+    btn.innerHTML = `
+      <div class="name">${name}</div>
+      <div class="tag">${idx === selectedIndex ? "Selected" : "Pick"}</div>
+    `;
 
     btn.addEventListener("click", () => {
-      finalNameEl.textContent = name;
-      screenPick.classList.add("hidden");
-      screenConfirm.classList.remove("hidden");
+      selectedIndex = idx;
+      submitBtn.disabled = false;
+      hintText.textContent = `Selected: ${currentChoices[selectedIndex]}`;
+      renderChoices(); // re-render to update selected styling
     });
 
     choicesEl.appendChild(btn);
   });
 }
 
-// ---- events ----
-refreshBtn.addEventListener("click", renderChoices);
+// ---------- FLOWS ----------
+function resetToGenerate() {
+  selectedIndex = -1;
+  submitBtn.disabled = true;
+  hintText.textContent = "Choose one of the three options above.";
+  currentChoices = generateThreeUnique();
+  renderChoices();
 
-restartBtn.addEventListener("click", () => {
-  screenConfirm.classList.add("hidden");
-  screenPick.classList.remove("hidden");
+  screenResult.classList.add("hidden");
+  screenGenerate.classList.remove("hidden");
+}
+
+function goToResult() {
+  if (selectedIndex < 0) return;
+  const chosen = currentChoices[selectedIndex];
+  resultName.textContent = chosen;
+
+  screenGenerate.classList.add("hidden");
+  screenResult.classList.remove("hidden");
+}
+
+// ---------- EVENTS ----------
+refreshBtn.addEventListener("click", () => {
+  selectedIndex = -1;
+  submitBtn.disabled = true;
+  hintText.textContent = "Choose one of the three options above.";
+  currentChoices = generateThreeUnique();
   renderChoices();
 });
 
-// init
-renderChoices();
+submitBtn.addEventListener("click", () => {
+  goToResult();
+});
+
+restartBtn.addEventListener("click", () => {
+  resetToGenerate();
+});
+
+// ---------- INIT ----------
+resetToGenerate();
