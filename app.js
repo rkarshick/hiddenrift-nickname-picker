@@ -1,5 +1,9 @@
 // Can U Xcape Team Name Generator (2-screen, pulsar transition)
 
+/* -------------------------
+   WORD LISTS
+------------------------- */
+
 const ADJECTIVES = [
   "Epic","Legendary","Savage","Rad","Wild","Dope","Crazy","Insane","Lit","Boss",
   "Extra","Fire","Fierce","Fresh","Fly","Funky","Hyped","Sick","Sweet","Imaginary",
@@ -16,57 +20,105 @@ const ADJECTIVES = [
   "Curious","Extraordinary","Eccentric","Absurd","Strongest","Chunky",
 ];
 
-const NOUNS = [
-  // Fun objects / food / chaos (non-office)
-  "Couch","Pillow","Spoon","Kiwi","Rock","Banana","Pie","Monk","Lamp","Glove",
-  "Toaster","Shoe","Carpet","Mirror","Book","Emu","Bicycle","Chair",
-  "Bed","Fridge","Puppet","Hat","Bacon","Bagel","Backpack","Nacho","Cup",
-  "Key","Burrito","Candy","Umbrella","Watch","Camera","Guitar","Drum",
-  "Avenger","Clock","Hammer","Nail","Screwdriver","Wrench","Toast","Smudge","Glue","Hedgehog",
-  "Hulk","Highlighter","Otter","Cat King","Hero","Envelope","Sloth","Calculator","Toilet",
-  "Litter Box","Eraser","Chalk","Warrior","Badger","Fish","Newspaper","Apple","Hamster","Globe",
-  "Mailman","Flashlight","Tent","Sleeping Bag","Garter Snake","Sunglasses","Jacket","Boots","Scarf","Beanie",
-  "Belt","Bracelet","Necklace","Earring","Ring","Tie","Headphones","Bulb","Fisherman","Drone",
-  "Zombie","Dancer","Sunflower","Earwig","Slapper","Ninja","Dog Catcher","Mouse","Avocado","Wound","Dad",
-  "Mom","Sparrow","Kettle","Coffee","Tea","Sugar","Salt","Pepper","Spice","Oil","Vinegar","Sauce",
-  "Butter","Cheese","Milk","Juice","Water","Soda","Gum","Popcorn","Chips",
-  "Pretzel","Corn Dog","Bestie","Vortex","Panda","Bull","Penguin","Bee","Stinger","Dip","Bunny","Lunchlady",
-  "Sensei","Dragon","Knight","Bandit","Clown","Cake","Rascal",
-
-  // Trendy / Gen Z-ish nouns
-  "Rizzler","Main Character","Side Quest","Glow Up","Vibe","Vibe Check","NPC","Meme",
-  "Sigma","GigaChad","Skibidi","Wojak","Chad","Goblin Mode","Gremlin","Chaos Gremlin",
-  "Braincell","Goober","Sussy Baka","Lore","Plot Twist","Skill Issue","Touch Grass",
-  "Snack","Slay","W","L","Yap","Yapper","Yappathon","Mood","Delulu","Ick",
-  "Yeet","Drip","Aura","Tea Spiller","Receipts","Hot Take","Cringe","Based",
-
-  // Group/team nouns (these should NOT get pluralized again)
+// Group/team nouns (should NOT get pluralized again)
+const DO_NOT_PLURALIZE = new Set([
   "Cult","Overlords","Squad","Crew","Council","Coven","Clan","Guild","Horde","Mob",
   "Legion","Pack","Swarm","Gang","Alliance","Cartel","Syndicate","Cabal","Order",
   "Party","Tribe","Collective","Clique","Posse","Unit","Regime","Brotherhood","Sisterhood"
+]);
 
-  //Family nouns
+// phrase + irregular plural map
+const PHRASE_PLURALS = new Map([
+  ["Cat King", "Cat Kings"],
+  ["Litter Box", "Litter Boxes"],
+  ["Sleeping Bag", "Sleeping Bags"],
+  ["Garter Snake", "Garter Snakes"],
+  ["Corn Dog", "Corn Dogs"],
+  ["Dog Catcher", "Dog Catchers"],
+  ["Main Character", "Main Characters"],
+  ["Side Quest", "Side Quests"],
+  ["Glow Up", "Glow Ups"],
+  ["Vibe Check", "Vibe Checks"],
+  ["Big Boss", "Big Bosses"],
+  ["Final Boss", "Final Bosses"],
+  ["Mini Boss", "Mini Bosses"],
+  ["Chosen One", "Chosen Ones"],
+  ["Time Traveler", "Time Travelers"],
+  ["Rift Walker", "Rift Walkers"],
+  ["Void Caller", "Void Callers"],
+  ["Drama Kid", "Drama Kids"],
+  ["Band Kid", "Band Kids"],
+  ["Gym Bro", "Gym Bros"],
+  ["Cat Mom", "Cat Moms"],
+  ["Dog Dad", "Dog Dads"],
+  ["Snack Dealer", "Snack Dealers"],
+  ["Chaos Child", "Chaos Children"],
+  ["Supreme Leader", "Supreme Leaders"],
+]);
+
+const IRREGULAR_PLURALS = new Map([
+  ["Mouse", "Mice"],
+  ["Fish", "Fish"],
+  ["Man", "Men"],
+  ["Woman", "Women"],
+  ["Person", "People"],
+  ["Child", "Children"],
+]);
+
+const NOUNS = [
+  // Fun objects / food / chaos (NON-office)
+  "Couch","Pillow","Spoon","Kiwi","Rock","Banana","Pie","Lamp","Glove",
+  "Toaster","Shoe","Carpet","Mirror","Book","Emu","Bicycle","Chair",
+  "Bed","Fridge","Puppet","Hat","Bacon","Bagel","Backpack","Nacho","Cup",
+  "Key","Burrito","Candy","Umbrella","Watch","Camera","Guitar","Drum",
+  "Clock","Hammer","Nail","Screwdriver","Wrench","Toast","Smudge","Glue","Hedgehog",
+  "Otter","Cat King","Hero","Sloth","Toilet",
+  "Litter Box","Warrior","Badger","Fish","Apple","Hamster","Globe",
+  "Mailman","Flashlight","Tent","Sleeping Bag","Garter Snake","Jacket","Boots","Scarf","Beanie",
+  "Belt","Bracelet","Necklace","Earring","Ring","Tie","Headphones","Bulb","Fisherman","Drone",
+  "Zombie","Dancer","Sunflower","Earwig","Slapper","Ninja","Dog Catcher","Mouse","Avocado",
+  "Sparrow","Kettle","Coffee","Tea","Sugar","Salt","Pepper","Spice","Oil","Vinegar","Sauce",
+  "Butter","Cheese","Milk","Juice","Water","Soda","Gum","Popcorn","Chips",
+  "Pretzel","Corn Dog","Vortex","Panda","Bull","Penguin","Bee","Stinger","Dip","Bunny","Lunchlady",
+  "Dragon","Knight","Bandit","Clown","Cake","Rascal",
+
+  // Trendy / Gen Z-ish nouns (phrases allowed)
+  "Rizzler","Main Character","Side Quest","Glow Up","Vibe","Vibe Check","NPC","Meme",
+  "Sigma","GigaChad","Skibidi","Wojak","Chad","Goblin Mode","Gremlin","Chaos Gremlin",
+  "Braincell","Goober","Lore","Plot Twist","Skill Issue","Touch Grass",
+  "Snack","Slay","W","L","Yap","Yapper","Mood","Delulu","Ick",
+  "Yeet","Drip","Aura","Tea Spiller","Receipts","Hot Take","Cringe","Based",
+
+  // Group/team nouns (do-not-pluralize list handles these)
+  "Cult","Overlords","Squad","Crew","Council","Coven","Clan","Guild","Horde","Mob",
+  "Legion","Pack","Swarm","Gang","Alliance","Cartel","Syndicate","Cabal","Order",
+  "Party","Tribe","Collective","Clique","Posse","Unit","Regime","Brotherhood","Sisterhood",
+
+  // Family / people
   "Mom","Dad","Cousin","Uncle","Aunt","Grandma","Grandpa","Nana","Papa",
   "Sibling","Brother","Sister","Twin","Stepdad","Stepmom","Stepbrother","Stepsister",
   "Nephew","Niece","Godmother","Godfather",
   "Roommate","Neighbor","Bestie","BFF","Frenemy",
   "Babysitter","Chaperone","Drama Kid","Band Kid","Gym Bro","Cat Mom","Dog Dad",
-  "Snack Dealer","Chaos Child","Legend","Goober","Gremlin","Sleepyhead","Yapper"
+  "Snack Dealer","Chaos Child","Legend","Sleepyhead",
 
-//Titles
+  // Titles / ranks
   "King","Queen","Prince","Princess","Duke","Duchess","Baron","Baroness",
   "Emperor","Empress","Warlord","Overlord","Supreme Leader",
   "Captain","Commander","General","Marshal","Admiral",
-  "Knight","Paladin","Samurai","Viking","Gladiator","Mercenary",
-  "Nomad","Raider","Ranger","Assassin","Bandit","Outlaw","Pirate",
+  "Paladin","Samurai","Viking","Gladiator","Mercenary",
+  "Nomad","Raider","Ranger","Assassin","Outlaw","Pirate",
   "Wizard","Sorcerer","Witch","Warlock","Alchemist","Oracle","Shaman",
   "Sensei","Sage","Prophet","Monk","Cultist","Herald",
-  "Boss","Big Boss","Final Boss","Mini Boss","NPC","Main Character",
+  "Boss","Big Boss","Final Boss","Mini Boss",
   "Chosen One","Gatekeeper","Time Traveler","Rift Walker","Void Caller"
 ];
 
 
-// DOM
+/* -------------------------
+   DOM
+------------------------- */
+
 const screenPick = document.getElementById("screenPick");
 const screenConfirm = document.getElementById("screenConfirm");
 const choicesEl = document.getElementById("choices");
@@ -79,44 +131,33 @@ const pulsarEl = document.getElementById("pulsar");
 
 let selectedName = "";
 
-// phrase + irregular plural map
-const PHRASE_PLURALS = new Map([
-  ["Cat King", "Cat Kings"],
-  ["Litter Box", "Litter Boxes"],
-  ["Sleeping Bag", "Sleeping Bags"],
-  ["Garter Snake", "Garter Snakes"],
-  ["Corn Dog", "Corn Dogs"],
-  ["Dog Catcher", "Dog Catchers"],
-]);
-const IRREGULAR_PLURALS = new Map([
-  ["Mouse", "Mice"],
-  ["Fish", "Fish"],
-]);
 
+/* -------------------------
+   HELPERS
+------------------------- */
 
 function pluralize(noun) {
   if (DO_NOT_PLURALIZE.has(noun)) return noun;
   if (PHRASE_PLURALS.has(noun)) return PHRASE_PLURALS.get(noun);
   if (IRREGULAR_PLURALS.has(noun)) return IRREGULAR_PLURALS.get(noun);
+
+  // If noun ends with s/x/z/ch/sh -> add "es"
   if (/(s|x|z|ch|sh)$/i.test(noun)) return noun + "es";
+  // consonant + y -> ies
   if (/[bcdfghjklmnpqrstvwxyz]y$/i.test(noun)) return noun.slice(0, -1) + "ies";
+  // default
   return noun + "s";
 }
-
-const DO_NOT_PLURALIZE = new Set([
-  "Cult","Overlords","Squad","Crew","Council","Coven","Clan","Guild","Horde","Mob",
-  "Legion","Pack","Swarm","Gang","Alliance","Cartel","Syndicate","Cabal","Order",
-  "Party","Tribe","Collective","Clique","Posse","Unit","Regime","Brotherhood","Sisterhood"
-]);
 
 function pick(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
-// “funny combos”: add a tiny chance to double-adjective (still from your list)
+// “funny combos”: small chance to double-adjective
 function makeName() {
   const adj1 = pick(ADJECTIVES);
-  const noun = pluralize(pick(NOUNS));
+  const rawNoun = pick(NOUNS);
+  const noun = pluralize(rawNoun);
 
   const roll = Math.random();
   if (roll < 0.18) {
@@ -150,7 +191,6 @@ function renderChoices() {
     btn.textContent = name;
 
     btn.addEventListener("click", () => {
-      // clear selected state
       Array.from(choicesEl.querySelectorAll(".choice-btn")).forEach(b => b.classList.remove("selected"));
       btn.classList.add("selected");
       setSelected(name);
@@ -161,7 +201,6 @@ function renderChoices() {
 }
 
 function playPulsarThen(fn) {
-  // restart animation by toggling node
   pulsarEl.classList.remove("hidden");
   pulsarEl.style.animation = "none";
   // force reflow
@@ -169,14 +208,17 @@ function playPulsarThen(fn) {
   pulsarEl.offsetHeight;
   pulsarEl.style.animation = "";
 
-  // run after animation finishes
   setTimeout(() => {
     pulsarEl.classList.add("hidden");
     fn();
   }, 650);
 }
 
-// Events
+
+/* -------------------------
+   EVENTS
+------------------------- */
+
 refreshBtn.addEventListener("click", () => {
   playPulsarThen(() => renderChoices());
 });
