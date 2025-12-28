@@ -17,21 +17,35 @@ const ADJECTIVES = [
 ];
 
 const NOUNS = [
+  // Fun objects / food / chaos (non-office)
   "Couch","Pillow","Spoon","Kiwi","Rock","Banana","Pie","Monk","Lamp","Glove",
-  "Toaster","Shoe","Carpet","Stapler","Mirror","Book","Emu","Bicycle","Desk","Chair",
-  "Bed","Fridge","Puppet","Hat","Bacon","Bagel","Backpack","Nacho","Glasses","Cup",
-  "Key","Burrito","Pen","Baddie","Candy","Umbrella","Watch","Camera","Guitar","Drum",
-  "Avenger","Clock","Hammer","Nail","Screwdriver","Wrench","Toast","Smudge","Glue","HedgeHog",
+  "Toaster","Shoe","Carpet","Mirror","Book","Emu","Bicycle","Chair",
+  "Bed","Fridge","Puppet","Hat","Bacon","Bagel","Backpack","Nacho","Cup",
+  "Key","Burrito","Candy","Umbrella","Watch","Camera","Guitar","Drum",
+  "Avenger","Clock","Hammer","Nail","Screwdriver","Wrench","Toast","Smudge","Glue","Hedgehog",
   "Hulk","Highlighter","Otter","Cat King","Hero","Envelope","Sloth","Calculator","Toilet",
   "Litter Box","Eraser","Chalk","Warrior","Badger","Fish","Newspaper","Apple","Hamster","Globe",
   "Mailman","Flashlight","Tent","Sleeping Bag","Garter Snake","Sunglasses","Jacket","Boots","Scarf","Beanie",
   "Belt","Bracelet","Necklace","Earrings","Ring","Tie","Headphones","Bulb","Fisherman","Drone",
-  "Zombie","Dancer","Sunflower","Earwig","Slapper","Ninja","Dog Catcher","Mouse","Avacodo","Wound","Dad",
+  "Zombie","Dancer","Sunflower","Earwig","Slapper","Ninja","Dog Catcher","Mouse","Avocado","Wound","Dad",
   "Mom","Sparrow","Kettle","Coffee","Tea","Sugar","Salt","Pepper","Spice","Oil","Vinegar","Sauce",
   "Butter","Cheese","Milk","Juice","Water","Soda","Gum","Popcorn","Chips",
   "Pretzel","Corn Dog","Bestie","Vortex","Panda","Bull","Penguin","Bee","Stinger","Dip","Bunny","Lunchlady",
-  "Overlord","Sensei","Draggon","Knight","Bandit","Clown","Cake","Rascal"
+  "Sensei","Dragon","Knight","Bandit","Clown","Cake","Rascal",
+
+  // Trendy / Gen Z-ish nouns
+  "Rizzler","Main Character","Side Quest","Glow Up","Vibe","Vibe Check","NPC","Meme",
+  "Sigma","GigaChad","Skibidi","Wojak","Chad","Goblin Mode","Gremlin","Chaos Gremlin",
+  "Braincell","Goober","Sussy Baka","Lore","Plot Twist","Skill Issue","Touch Grass",
+  "Snack","Slay","W","L","Yap","Yapper","Yappathon","Mood","Delulu","Ick",
+  "Yeet","Drip","Aura","Tea Spiller","Receipts","Hot Take","Cringe","Based",
+
+  // Group/team nouns (these should NOT get pluralized again)
+  "Cult","Overlords","Squad","Crew","Council","Coven","Clan","Guild","Horde","Mob",
+  "Legion","Pack","Swarm","Gang","Alliance","Cartel","Syndicate","Cabal","Order",
+  "Party","Tribe","Collective","Clique","Posse","Unit","Regime","Brotherhood","Sisterhood"
 ];
+
 
 // DOM
 const screenPick = document.getElementById("screenPick");
@@ -60,13 +74,22 @@ const IRREGULAR_PLURALS = new Map([
   ["Fish", "Fish"],
 ]);
 
+const DO_NOT_PLURALIZE = new Set([
+  "Cult","Overlords","Squad","Crew","Council","Coven","Clan","Guild","Horde","Mob",
+  "Legion","Pack","Swarm","Gang","Alliance","Cartel","Syndicate","Cabal","Order",
+  "Party","Tribe","Collective","Clique","Posse","Unit","Regime","Brotherhood","Sisterhood"
+]);
+
+
 function pluralize(noun) {
+  if (DO_NOT_PLURALIZE.has(noun)) return noun;
   if (PHRASE_PLURALS.has(noun)) return PHRASE_PLURALS.get(noun);
   if (IRREGULAR_PLURALS.has(noun)) return IRREGULAR_PLURALS.get(noun);
   if (/(s|x|z|ch|sh)$/i.test(noun)) return noun + "es";
   if (/[bcdfghjklmnpqrstvwxyz]y$/i.test(noun)) return noun.slice(0, -1) + "ies";
   return noun + "s";
 }
+
 
 function pick(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
