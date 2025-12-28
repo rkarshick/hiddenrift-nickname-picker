@@ -68,14 +68,14 @@ const IRREGULAR_PLURALS = new Map([
 const NOUNS = [
   // Fun objects / food / chaos (NON-office)
   "Couch","Pillow","Party Animal","Kiwi","Rock","Banana","Pie","Lamp","Glove",
-  "Toaster","Clown","Carpet","Bookworm","Book","Emu","Bicycle","Chair",
+  "Toaster","Clown","Carpet","Bookworm","Book","Emu","Bicycle","Spider",
   "Bed","Nugget","Puppet","Hat","Bacon","Bagel","Backpack","Nacho","Cup",
   "Key","Burrito","Candy","Umbrella","Watch","Camera","Guitar","Troublemaker",
-  "Clock","Hammer","Nail","Screwdriver","Wrench","Toast","Smudge","Glue","Hedgehog",
+  "McChicken","Hammer","Nail","Screwdriver","Wrench","Cube","Smudge","Glue","Hedgehog",
   "Otter","Cat King","Hero","Sloth","Toilet",
   "Litter Box","Warrior","Badger","Fish","Apple","Hamster","Globe",
   "Mailman","Flashlight","Tent","Sleeping Bag","Garter Snake","Jacket","Boots","Scarf","Beanie",
-  "Belt","Bracelet","Necklace","Earring","Ring","Tie","Headphones","Turnip","Fisherman","Drone",
+  "Belt","Bracelet","Necklace","Earring","Flat Earther","Tie","Headphones","Turnip","Fisherman","Drone",
   "Zombie","Dancer","Sunflower","Earwig","Slapper","Ninja","Dog Catcher","Mouse","Avocado",
   "Sparrow","Kettle","Coffee","Joker","Smooth criminal","Salt","Pepper","Spice","Dude","Vinegar","Sauce",
   "Butter","Cheese","Milk","Juice","Water","Soda","Gum","Popcorn","Chips",
@@ -97,7 +97,7 @@ const NOUNS = [
   // Family / people
   "Mom","Dad","Cousin","Uncle","Aunt","Grandma","Grandpa","Nana","Papa",
   "Sibling","Brother","Sister","Twin", "Sherlock", "Soul sister",
-  "Nephew","Niece","Godmother","Godfather",
+  "Nephew","Niece","Godmother","Godfather","Umpa-Lumpa",
   "Roommate","Neighbor","Bestie","BFF","Frenemy",
   "Babysitter","Chaperone","Drama Kid","Band Kid","Gym Bro","Cat Mom","Dog Dad",
   "Snack Dealer","Chaos Child","Legend","Sleepyhead",
