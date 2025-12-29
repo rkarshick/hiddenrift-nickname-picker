@@ -1,5 +1,6 @@
 // app.js
 // Can U Xcape Team Name Generator (2-screen, pulsar transition + COPY modal + auto refresh)
+// Works on PC + phone. Clipboard works best on https or localhost; fallback included.
 
 const ADJECTIVES = [
   "Epic","Legendary","Savage","Rad","Wild","Dope","Crazy","Insane","Lit","Boss",
@@ -7,14 +8,13 @@ const ADJECTIVES = [
   "Wicked","Awesome","Brutal","Chill","Cool","Dynamic","Electric","Fabulous","Glam","Groovy",
   "Hilarious","Hyper","Jazzy","Killer","Lively","Mad","Neon","Outrageous","Pumped","Quirky",
   "Raging","Sassy","Spicy","Thrilling","Unreal","Viral","Xtreme","Youthful","Velvet","Breezy",
-  "Cheeky","Dazzling","Energetic","Fiery","Gritty","Illuminated","Jolly","Crazed","Abusive",
+  "Cheeky","Dazzling","Energetic","Fiery","Gritty","Illuminated","Jolly",
   "Mighty","Nimble","Psyched","Wonderful","Riot","Spunky","Turbo","Ultra","Vivid","Whacky",
-  "Darth","Blazing","Cosmic","Galactic","Kinetic","Mystic","Radiant","Stellar","Swirling","Expensive",
-  "Soft","Big","Drifting","Echoing","Fluxing","Glowing","Sleepy","Igniting","Jeting","Broken",
-  "Profound","Invisable","Rebel","Messy","Ultimate","Valiant","Annoying","Brave","Swift","Cheating",
-  "Kind","Quiet","Gaming","Noob","Adventerous","Small","Stoked","Expired","Broken","Burnt","Turnt",
-  "Ugly","Simping","Censored","Sour","Wealthy","Shook","Vindicated","Bizarre","Strange","Unusual",
-  "Curious","Extraordinary","Eccentric","Absurd","Strongest","Chunky","Smelly","Ultimate","Limping"
+  "Blazing","Cosmic","Galactic","Kinetic","Mystic","Radiant","Stellar","Swirling",
+  "Soft","Big","Drifting","Echoing","Fluxing","Glowing","Sleepy","Igniting","Broken",
+  "Rebel","Messy","Ultimate","Valiant","Annoying","Brave","Swift",
+  "Gaming","Noob","Small","Stoked","Expired","Burnt","Turnt","Sour","Shook",
+  "Bizarre","Strange","Unusual","Absurd","Chunky","Smelly","Limping"
 ];
 
 // Group/team nouns (should NOT get pluralized again)
@@ -24,14 +24,13 @@ const DO_NOT_PLURALIZE = new Set([
   "Party","Tribe","Collective","Clique","Posse","Unit","Regime","Brotherhood","Sisterhood"
 ]);
 
-// phrase + irregular plural map
 const PHRASE_PLURALS = new Map([
   ["Party Animal", "Party Animals"],
   ["Bookworm", "Bookworms"],
   ["Flat Earther", "Flat Earthers"],
   ["Milk Carton", "Milk Cartons"],
-  ["Smooth criminal", "Smooth criminals"],
-  ["Soul sister", "Soul sisters"],
+  ["Smooth Criminal", "Smooth Criminals"],
+  ["Soul Sister", "Soul Sisters"],
   ["Cat King", "Cat Kings"],
   ["Litter Box", "Litter Boxes"],
   ["Sleeping Bag", "Sleeping Bags"],
@@ -70,19 +69,19 @@ const IRREGULAR_PLURALS = new Map([
 
 const NOUNS = [
   "Couch","Pillow","Party Animal","Kiwi","Rock","Banana","Pie","Lamp","Glove",
-  "Toaster","Clown","Carpet","Bookworm","Book","Emu","Bicycle","Spider",
-  "Bed","Nugget","Puppet","Hat","Bacon","Bagel","Backpack","Nacho","Cup",
-  "Key","Burrito","Candy","Umbrella","Watch","Camera","Guitar","Troublemaker",
-  "McChicken","Hammer","Nail","Screwdriver","Wrench","Cube","Smudge","Ringer","Hedgehog",
+  "Toaster","Clown","Carpet","Bookworm","Emu","Bicycle","Spider",
+  "Nugget","Puppet","Hat","Bacon","Bagel","Backpack","Nacho","Cup",
+  "Key","Burrito","Candy","Umbrella","Camera","Guitar","Troublemaker",
+  "Hammer","Nail","Screwdriver","Wrench","Cube","Hedgehog",
   "Otter","Cat King","Hero","Sloth","Toilet",
   "Litter Box","Warrior","Badger","Fish","Apple","Hamster","Bean",
   "Mailman","Flashlight","Tent","Sleeping Bag","Garter Snake","Jacket","Boots","Scarf","Beanie",
-  "Belt","Bracelet","Necklace","Earring","Flat Earther","Tie","Head","Turnip","Fisherman","Drone",
-  "Zombie","Dancer","Sunflower","Earwig","Slapper","Ninja","Dog Catcher","Mouse","Avocado",
-  "Sparrow","Hoodie","Coffee","Joker","Smooth criminal","Salt","Pepper","Spice","Dude","Vinegar","Sauce",
-  "Butter","Cheese","Milk Carton","Juice","Coward","Water Boy","Cowboy","Popcorn","Chips",
+  "Bracelet","Necklace","Earring","Flat Earther","Turnip","Fisherman","Drone",
+  "Zombie","Dancer","Sunflower","Earwig","Ninja","Dog Catcher","Mouse","Avocado",
+  "Sparrow","Hoodie","Coffee","Joker","Smooth Criminal","Pepper","Spice","Dude","Sauce",
+  "Butter","Cheese","Milk Carton","Juice","Coward","Cowboy","Popcorn","Chips",
   "Pretzel","Corn Dog","Vortex","Panda","Bull","Penguin","Bee","Stranger","Gamer","Bunny","Lunchlady",
-  "Dragon","Knight","Bandit","Clown","Hunk","Rascal",
+  "Dragon","Knight","Bandit","Hunk","Rascal",
 
   "Rizzler","Main Character","Side Quest","Glow Up","Vibe","Vibe Check","NPC","Meme",
   "Sigma","GigaChad","Skibidi","Chad","Goblin Mode","Gremlin","Chaos Gremlin",
@@ -95,7 +94,7 @@ const NOUNS = [
   "Party","Tribe","Collective","Clique","Posse","Unit","Regime","Brotherhood","Sisterhood",
 
   "Mom","Dad","Cousin","Uncle","Aunt","Grandma","Grandpa","Nana","Papa",
-  "Sibling","Brother","Sister","Twin","Sherlock","Soul sister",
+  "Sibling","Brother","Sister","Twin","Sherlock","Soul Sister",
   "Nephew","Niece","Godmother","Godfather","Umpa-Lumpa",
   "Roommate","Neighbor","Bestie","BFF","Frenemy",
   "Babysitter","Chaperone","Drama Kid","Band Kid","Gym Bro","Cat Mom","Dog Dad",
@@ -106,8 +105,8 @@ const NOUNS = [
   "Captain","Commander","General","Marshal","Admiral",
   "Paladin","Samurai","Viking","Gladiator","Mercenary",
   "Nomad","Raider","Ranger","Assassin","Outlaw","Pirate",
-  "Wizard","Sorcerer","Witch","Warlock","Alchemist","Oracle","Cashier",
-  "Sensei","Sage","Prophet","Monk","Manager","Herald",
+  "Wizard","Sorcerer","Witch","Warlock","Alchemist","Oracle",
+  "Sensei","Sage","Prophet","Monk","Herald",
   "Boss","Big Boss","Final Boss","Mini Boss",
   "Chosen One","Gatekeeper","Time Traveler","Rift Walker","Void Caller"
 ];
@@ -116,36 +115,24 @@ const NOUNS = [
    DOM
 ------------------------- */
 
-const screenPick   = document.getElementById("screenPick");
-const screenConfirm= document.getElementById("screenConfirm");
-const choicesEl    = document.getElementById("choices");
-const refreshBtn   = document.getElementById("refreshBtn");
-const submitBtn    = document.getElementById("submitBtn");
-const restartBtn   = document.getElementById("restartBtn");
-const pickedNameEl = document.getElementById("pickedName");
-const finalNameEl  = document.getElementById("finalName");
-const pulsarEl     = document.getElementById("pulsar");
+const screenPick    = document.getElementById("screenPick");
+const screenConfirm = document.getElementById("screenConfirm");
+const choicesEl     = document.getElementById("choices");
+const refreshBtn    = document.getElementById("refreshBtn");
+const submitBtn     = document.getElementById("submitBtn");
+const restartBtn    = document.getElementById("restartBtn");
+const pickedNameEl  = document.getElementById("pickedName");
+const finalNameEl   = document.getElementById("finalName");
+const pulsarEl      = document.getElementById("pulsar");
 
-// NEW (for copy modal + copy button)
 const copyBtn        = document.getElementById("copyBtn");
 const copyModal      = document.getElementById("copyModal");
 const copyModalClose = document.getElementById("copyModalClose");
 const copyModalText  = document.getElementById("copyModalText");
-
-const REQUIRED = {
-  screenPick, screenConfirm, choicesEl, refreshBtn, submitBtn, restartBtn, pickedNameEl, finalNameEl, pulsarEl
-};
-for (const [k, v] of Object.entries(REQUIRED)) {
-  if (!v) console.error(`[TeamNameGen] Missing element ID: ${k}. Check your HTML IDs.`);
-}
-
-// Copy-related elements are optional BUT if you added them in HTML, they must exist:
-if (!copyBtn) console.warn("[TeamNameGen] Missing element ID: copyBtn (Copy button won't work).");
-if (!copyModal) console.warn("[TeamNameGen] Missing element ID: copyModal (Copy modal won't show).");
-if (!copyModalClose) console.warn("[TeamNameGen] Missing element ID: copyModalClose.");
-if (!copyModalText) console.warn("[TeamNameGen] Missing element ID: copyModalText.");
+const copyModalInput = document.getElementById("copyModalInput");
 
 let selectedName = "";
+let submittedName = "";        // IMPORTANT: what we copy
 let autoRefreshTimer = null;
 
 /* -------------------------
@@ -205,7 +192,8 @@ function renderChoices() {
     btn.textContent = name;
 
     btn.addEventListener("click", () => {
-      Array.from(choicesEl.querySelectorAll(".choice-btn")).forEach(b => b.classList.remove("selected"));
+      Array.from(choicesEl.querySelectorAll(".choice-btn"))
+        .forEach(b => b.classList.remove("selected"));
       btn.classList.add("selected");
       setSelected(name);
     });
@@ -229,9 +217,18 @@ function playPulsarThen(fn) {
   }, 650);
 }
 
-function openCopyModal() {
+function openCopyModal(nameText) {
   if (!copyModal) return;
+  if (copyModalInput) copyModalInput.value = nameText || "";
   copyModal.classList.remove("hidden");
+
+  // mobile: select text so they can manually copy if needed
+  if (copyModalInput) {
+    copyModalInput.focus();
+    copyModalInput.select();
+    // iOS sometimes needs an explicit range:
+    try { copyModalInput.setSelectionRange(0, copyModalInput.value.length); } catch {}
+  }
 }
 
 function closeCopyModal() {
@@ -240,28 +237,25 @@ function closeCopyModal() {
 }
 
 async function copyToClipboard(text) {
-  // Modern secure context path
-  if (navigator.clipboard && window.isSecureContext) {
+  // 1) Modern clipboard (needs user gesture; works best on https/localhost)
+  if (navigator.clipboard && typeof navigator.clipboard.writeText === "function") {
     await navigator.clipboard.writeText(text);
     return true;
   }
 
-  // Fallback (works on http/local file in many browsers)
+  // 2) Fallback: execCommand
   const ta = document.createElement("textarea");
   ta.value = text;
   ta.setAttribute("readonly", "");
   ta.style.position = "fixed";
-  ta.style.top = "-9999px";
-  ta.style.opacity = "0";
+  ta.style.left = "-9999px";
+  ta.style.top = "0";
   document.body.appendChild(ta);
+  ta.focus();
   ta.select();
 
   let ok = false;
-  try {
-    ok = document.execCommand("copy");
-  } catch {
-    ok = false;
-  }
+  try { ok = document.execCommand("copy"); } catch { ok = false; }
   document.body.removeChild(ta);
   return ok;
 }
@@ -269,30 +263,28 @@ async function copyToClipboard(text) {
 function startAutoRefreshCountdown() {
   if (autoRefreshTimer) clearTimeout(autoRefreshTimer);
 
-  // Update modal text countdown (optional)
   let seconds = 5;
-  if (copyModalText) {
+  const setMsg = () => {
+    if (!copyModalText) return;
     copyModalText.textContent =
       `Please close this pop-up and PASTE this TEAM-NAME into the Booking area! Auto-refreshing in ${seconds} seconds...`;
-  }
+  };
+
+  setMsg();
 
   const tick = () => {
     seconds -= 1;
     if (seconds <= 0) {
-      // restart fully
       playPulsarThen(() => {
         closeCopyModal();
         if (screenConfirm) screenConfirm.classList.add("hidden");
         if (screenPick) screenPick.classList.remove("hidden");
+        submittedName = "";
         renderChoices();
       });
       return;
     }
-
-    if (copyModalText) {
-      copyModalText.textContent =
-        `Please close this pop-up and PASTE this TEAM-NAME into the Booking area! Auto-refreshing in ${seconds} seconds...`;
-    }
+    setMsg();
     autoRefreshTimer = setTimeout(tick, 1000);
   };
 
@@ -303,80 +295,72 @@ function startAutoRefreshCountdown() {
    EVENTS
 ------------------------- */
 
-if (refreshBtn) {
-  refreshBtn.addEventListener("click", () => {
-    playPulsarThen(() => renderChoices());
+refreshBtn?.addEventListener("click", () => {
+  playPulsarThen(() => renderChoices());
+});
+
+submitBtn?.addEventListener("click", () => {
+  if (!selectedName) return;
+
+  submittedName = selectedName; // IMPORTANT: persist what they submitted
+
+  playPulsarThen(() => {
+    if (finalNameEl) finalNameEl.textContent = submittedName;
+    screenPick?.classList.add("hidden");
+    screenConfirm?.classList.remove("hidden");
   });
-}
+});
 
-if (submitBtn) {
-  submitBtn.addEventListener("click", () => {
-    if (!selectedName) return;
-    playPulsarThen(() => {
-      if (finalNameEl) finalNameEl.textContent = selectedName;
-      if (screenPick) screenPick.classList.add("hidden");
-      if (screenConfirm) screenConfirm.classList.remove("hidden");
-    });
-  });
-}
-
-if (restartBtn) {
-  restartBtn.addEventListener("click", () => {
-    playPulsarThen(() => {
-      closeCopyModal();
-      if (autoRefreshTimer) clearTimeout(autoRefreshTimer);
-      if (screenConfirm) screenConfirm.classList.add("hidden");
-      if (screenPick) screenPick.classList.remove("hidden");
-      renderChoices();
-    });
-  });
-}
-
-// NEW: Copy button behavior
-if (copyBtn) {
-  copyBtn.addEventListener("click", async () => {
-    const text = selectedName || (finalNameEl ? finalNameEl.textContent : "");
-    if (!text || text === "—") return;
-
-    try {
-      const ok = await copyToClipboard(text);
-
-      // Always show the message (even if fallback returns false, user still sees instructions)
-      if (copyModalText) {
-        copyModalText.textContent =
-          ok
-            ? `Please close this pop-up and PASTE this TEAM-NAME into the Booking area! Auto-refreshing in 5 seconds...`
-            : `Couldn’t auto-copy (browser blocked it). Please select and copy manually, then paste into the Booking area. Auto-refreshing in 5 seconds...`;
-      }
-
-      openCopyModal();
-      startAutoRefreshCountdown();
-    } catch (e) {
-      console.error("Copy failed:", e);
-      if (copyModalText) {
-        copyModalText.textContent =
-          `Couldn’t auto-copy (browser blocked it). Please select and copy manually, then paste into the Booking area. Auto-refreshing in 5 seconds...`;
-      }
-      openCopyModal();
-      startAutoRefreshCountdown();
-    }
-  });
-}
-
-// NEW: close modal button
-if (copyModalClose) {
-  copyModalClose.addEventListener("click", () => {
+restartBtn?.addEventListener("click", () => {
+  playPulsarThen(() => {
     closeCopyModal();
-    // keep the 5-second timer running even if they close it (as requested)
+    if (autoRefreshTimer) clearTimeout(autoRefreshTimer);
+    submittedName = "";
+    screenConfirm?.classList.add("hidden");
+    screenPick?.classList.remove("hidden");
+    renderChoices();
   });
-}
+});
 
-// NEW: clicking backdrop closes modal
-if (copyModal) {
-  copyModal.addEventListener("click", (e) => {
-    if (e.target === copyModal) closeCopyModal();
-  });
-}
+copyBtn?.addEventListener("click", async () => {
+  const text = (submittedName || (finalNameEl ? finalNameEl.textContent : "") || "").trim();
+  if (!text || text === "—") return;
+
+  // Show modal immediately (so they always see feedback)
+  if (copyModalText) copyModalText.textContent = "Copying…";
+  openCopyModal(text);
+
+  try {
+    const ok = await copyToClipboard(text);
+
+    // Always show the “Copy complete!” modal text you requested
+    if (copyModalText) {
+      copyModalText.textContent =
+        ok
+          ? `Please close this pop-up and PASTE this TEAM-NAME into the Booking area! Auto-refreshing in 5 seconds...`
+          : `Copy blocked by your browser. Tap and hold the team name field to copy, then paste into the Booking area. Auto-refreshing in 5 seconds...`;
+    }
+
+    startAutoRefreshCountdown();
+  } catch (e) {
+    console.error("Copy failed:", e);
+    if (copyModalText) {
+      copyModalText.textContent =
+        `Copy blocked by your browser. Tap and hold the team name field to copy, then paste into the Booking area. Auto-refreshing in 5 seconds...`;
+    }
+    startAutoRefreshCountdown();
+  }
+});
+
+copyModalClose?.addEventListener("click", () => {
+  closeCopyModal();
+  // timer continues (as requested)
+});
+
+// clicking backdrop closes
+copyModal?.addEventListener("click", (e) => {
+  if (e.target === copyModal) closeCopyModal();
+});
 
 // init
 renderChoices();
