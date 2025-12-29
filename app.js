@@ -1,5 +1,10 @@
 // app.js
-// Can U Xcape Team Name Generator (2-screen, pulsar transition + COPY to clipboard + on-screen message + auto reset)
+// Can U Xcape Team Name Generator (2-screen, pulsar transition + iOS-friendly COPY + on-screen instructions)
+// ✅ No auto-refresh / auto-reset
+
+/* -------------------------
+   WORD LISTS
+------------------------- */
 
 const ADJECTIVES = [
   "Epic","Legendary","Savage","Rad","Wild","Dope","Crazy","Insane","Lit","Boss","Shifty",
@@ -125,12 +130,9 @@ const finalNameEl   = document.getElementById("finalName");
 const pulsarEl      = document.getElementById("pulsar");
 
 const copyBtn       = document.getElementById("copyBtn");
-const copyStatusEl  = document.getElementById("copyStatus");
-
-const AUTO_RESET_ENABLED = false; // <-- set true to enable again
+const copyStatusEl  = document.getElementById("copyStatus"); // add this element in HTML if not present
 
 let selectedName = "";
-let autoResetTimer = null;
 
 /* -------------------------
    HELPERS
@@ -213,22 +215,25 @@ function playPulsarThen(fn) {
 }
 
 async function copyToClipboard(text) {
-  // Secure-context path
+  // Best path on HTTPS + modern browsers
   if (navigator.clipboard && window.isSecureContext) {
     await navigator.clipboard.writeText(text);
     return true;
   }
 
-  // Fallback for non-secure contexts
+  // iOS/older fallback
   const ta = document.createElement("textarea");
   ta.value = text;
   ta.setAttribute("readonly", "");
   ta.style.position = "fixed";
-  ta.style.top = "-9999px";
+  ta.style.left = "-9999px";
+  ta.style.top = "0";
   ta.style.opacity = "0";
   document.body.appendChild(ta);
+
   ta.focus();
   ta.select();
+  ta.setSelectionRange(0, ta.value.length); // important for iOS
 
   let ok = false;
   try {
@@ -236,6 +241,7 @@ async function copyToClipboard(text) {
   } catch {
     ok = false;
   }
+
   document.body.removeChild(ta);
   return ok;
 }
@@ -243,29 +249,7 @@ async function copyToClipboard(text) {
 function setCopyStatus(message) {
   if (!copyStatusEl) return;
   copyStatusEl.textContent = message || "";
-  // keep it visible when there's a message
 }
-
-function clearAutoResetTimer() {
-  if (autoResetTimer) {
-    clearTimeout(autoResetTimer);
-    autoResetTimer = null;
-  }
-}
-
-function autoResetInFiveSeconds() {
-  if (!AUTO_RESET_ENABLED) return;
-  clearAutoResetTimer();
-  autoResetTimer = setTimeout(() => {
-    playPulsarThen(() => {
-      setCopyStatus("");
-      if (screenConfirm) screenConfirm.classList.add("hidden");
-      if (screenPick) screenPick.classList.remove("hidden");
-      renderChoices();
-    });
-  }, 5000);
-}
-
 
 /* -------------------------
    EVENTS
@@ -278,40 +262,18 @@ refreshBtn?.addEventListener("click", () => {
 submitBtn?.addEventListener("click", () => {
   if (!selectedName) return;
 
-  playPulsarThen(async () => {
-    // Show confirm screen
+  // IMPORTANT: do NOT auto-copy on submit (phones block it). Tell them to tap Copy.
+  playPulsarThen(() => {
     if (finalNameEl) finalNameEl.textContent = selectedName;
     screenPick?.classList.add("hidden");
     screenConfirm?.classList.remove("hidden");
 
-    // AUTO-COPY immediately after submit
-    try {
-      const ok = await copyToClipboard(selectedName);
-
-      if (ok) {
-        setCopyStatus(
-          "Team Name copied to clipboard!! Please close this screen and PASTE this TEAM-NAME in the Booking area!"
-        );
-      } else {
-        setCopyStatus(
-          "Couldn’t auto-copy (browser blocked it). Tap Copy, or select the name and copy manually. Then paste into the Booking area!"
-        );
-      }
-    } catch (e) {
-      console.error("Auto-copy failed:", e);
-      setCopyStatus(
-        "Couldn’t auto-copy (browser blocked it). Tap Copy, or select the name and copy manually. Then paste into the Booking area!"
-      );
-    }
-
-    // Auto-reset in 5 seconds (requested)
-    autoResetInFiveSeconds();
+    setCopyStatus("Tap COPY to copy the team name, then paste it into the Booking area.");
   });
 });
 
 restartBtn?.addEventListener("click", () => {
   playPulsarThen(() => {
-    clearAutoResetTimer();
     setCopyStatus("");
     screenConfirm?.classList.add("hidden");
     screenPick?.classList.remove("hidden");
@@ -325,21 +287,15 @@ copyBtn?.addEventListener("click", async () => {
 
   try {
     const ok = await copyToClipboard(text);
+
     if (ok) {
-      setCopyStatus(
-        "Team Name copied to clipboard!! Please close this screen and PASTE this TEAM-NAME in the Booking area!"
-      );
-      autoResetInFiveSeconds();
+      setCopyStatus("Copied! Now paste this TEAM-NAME into the Booking area.");
     } else {
-      setCopyStatus(
-        "Couldn’t auto-copy (browser blocked it). Select the name and copy manually, then paste into the Booking area!"
-      );
+      setCopyStatus("Copy blocked. Tap the team name, then tap-and-hold → Copy, then paste into Booking.");
     }
   } catch (e) {
     console.error("Copy failed:", e);
-    setCopyStatus(
-      "Couldn’t auto-copy (browser blocked it). Select the name and copy manually, then paste into the Booking area!"
-    );
+    setCopyStatus("Copy blocked. Tap the team name, then tap-and-hold → Copy, then paste into Booking.");
   }
 });
 
