@@ -260,7 +260,7 @@ function autoResetInFiveSeconds() {
       if (screenPick) screenPick.classList.remove("hidden");
       renderChoices();
     });
-  }, 5000);
+  }, 10000);
 }
 
 /* -------------------------
