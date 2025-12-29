@@ -43,7 +43,7 @@ body{
   display:flex;
   align-items:center;
   justify-content:center;
-  padding:20px;
+  padding:16px;
   position:relative;
 }
 
@@ -53,22 +53,22 @@ body{
   background: var(--card);
   border: 1px solid var(--stroke);
   border-radius: 18px;
-  padding: 26px;
+  padding: 22px;
   box-shadow: 0 18px 55px rgba(0,0,0,.55);
   backdrop-filter: blur(10px);
   text-align:center;
 }
 
-.hidden{ display:none !important; }
+.hidden{ display:none; }
 
 .title{
   margin:0 0 8px 0;
-  font-size: 30px;
+  font-size: 28px;
   letter-spacing: .2px;
   color:#fff;
 }
 .sub{
-  margin:0 0 18px 0;
+  margin:0 0 14px 0;
   color: var(--muted);
 }
 
@@ -77,7 +77,7 @@ body{
   display:grid;
   grid-template-columns: 1fr;
   gap: 12px;
-  margin: 14px 0 16px 0;
+  margin: 12px 0 14px 0;
 }
 @media (min-width: 760px){
   .choices{ grid-template-columns: repeat(3, 1fr); }
@@ -86,7 +86,7 @@ body{
 .choice-btn{
   width:100%;
   border-radius: 14px;
-  padding: 16px 14px;
+  padding: 14px 12px;
   border: 1px solid var(--stroke);
   background: rgba(255,255,255,.10);
   color: var(--text);
@@ -110,7 +110,7 @@ body{
   gap:10px;
   align-items:center;
   justify-content:center;
-  margin: 4px 0 14px 0;
+  margin: 4px 0 12px 0;
   flex-wrap:wrap;
 }
 .picked-label{
@@ -129,13 +129,6 @@ body{
   justify-content:center;
   flex-wrap:wrap;
 }
-.actions-split{
-  display:flex;
-  gap: .75rem;
-  justify-content:center;
-  flex-wrap:wrap;
-}
-
 .btn{
   border-radius: 12px;
   padding: 12px 16px;
@@ -146,7 +139,6 @@ body{
   cursor:pointer;
   transition: background .2s ease, transform .08s ease, opacity .2s ease;
   min-width: 120px;
-  -webkit-tap-highlight-color: transparent;
 }
 .btn:hover{ background: var(--btnHover); }
 .btn:active{ transform: translateY(1px); }
@@ -165,8 +157,8 @@ body{
 
 /* Confirm panel */
 .result{
-  margin: 18px auto 18px auto;
-  padding: 18px;
+  margin: 16px auto 12px auto;
+  padding: 16px;
   border-radius: 16px;
   border: 1px solid var(--stroke);
   background: rgba(0,0,0,.18);
@@ -178,9 +170,32 @@ body{
   margin-bottom: 6px;
 }
 .result-name{
-  font-size: 28px;
+  font-size: 26px;
   font-weight: 950;
   letter-spacing: .3px;
+  word-break: break-word;
+}
+
+/* NEW: copy status message */
+.copy-status{
+  margin: 0 auto 10px auto;
+  max-width: 620px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(0,0,0,.22);
+  color: rgba(255,255,255,.92);
+  line-height: 1.25;
+  min-height: 0; /* stays clean when empty */
+}
+.copy-status.hidden{
+  display:none;
+}
+
+.actions-split{
+  display:flex;
+  gap:.75rem;
+  justify-content:center;
 }
 
 /* Pulsar flash */
@@ -203,54 +218,12 @@ body{
   100% { width:0px; height:0px; opacity:0; background:black; }
 }
 
-/* Modal */
-.modal{
-  position: fixed;
-  inset: 0;
-  z-index: 999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1.25rem;
-  background: rgba(0,0,0,0.65);
-  backdrop-filter: blur(6px);
-}
-.modal-card{
-  width: 100%;
-  max-width: 520px;
-  background: rgba(0,0,0,0.70);
-  border: 1px solid rgba(255,255,255,0.15);
-  border-radius: 14px;
-  padding: 1.25rem 1.25rem 1rem;
-  box-shadow: 0 18px 50px rgba(0,0,0,0.55);
-  color: #fff;
-}
-.modal-title{
-  margin: 0 0 .5rem 0;
-  font-size: 1.25rem;
-}
-.modal-text{
-  margin: 0 0 1rem 0;
-  opacity: .95;
-  line-height: 1.35;
-}
-
-/* Manual copy helper */
-.modal-snippet{
-  margin: 0 0 1rem 0;
-  text-align: left;
-}
-.modal-snippet-label{
-  font-size: .9rem;
-  opacity: .9;
-  margin-bottom: .35rem;
-}
-.modal-snippet-input{
-  width: 100%;
-  padding: .75rem .9rem;
-  border-radius: 10px;
-  border: 1px solid rgba(255,255,255,.18);
-  background: rgba(255,255,255,.08);
-  color: #fff;
-  font-weight: 800;
+/* Mobile tweaks */
+@media (max-width: 480px){
+  .card{ padding: 18px; }
+  .title{ font-size: 24px; }
+  .choice-btn{ font-size: 15px; padding: 13px 12px; }
+  .btn{ width: 100%; min-width: 0; }
+  .actions{ width: 100%; }
+  .actions-split{ width: 100%; }
 }
