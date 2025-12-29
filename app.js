@@ -127,6 +127,8 @@ const pulsarEl      = document.getElementById("pulsar");
 const copyBtn       = document.getElementById("copyBtn");
 const copyStatusEl  = document.getElementById("copyStatus");
 
+const AUTO_RESET_ENABLED = false; // <-- set true to enable again
+
 let selectedName = "";
 let autoResetTimer = null;
 
@@ -252,6 +254,7 @@ function clearAutoResetTimer() {
 }
 
 function autoResetInFiveSeconds() {
+  if (!AUTO_RESET_ENABLED) return;
   clearAutoResetTimer();
   autoResetTimer = setTimeout(() => {
     playPulsarThen(() => {
@@ -260,8 +263,9 @@ function autoResetInFiveSeconds() {
       if (screenPick) screenPick.classList.remove("hidden");
       renderChoices();
     });
-  }, 10000);
+  }, 5000);
 }
+
 
 /* -------------------------
    EVENTS
