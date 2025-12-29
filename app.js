@@ -1,8 +1,5 @@
-// Can U Xcape Team Name Generator (2-screen, pulsar transition)
-
-/* -------------------------
-   WORD LISTS
-------------------------- */
+// app.js
+// Can U Xcape Team Name Generator (2-screen, pulsar transition + COPY modal + auto refresh)
 
 const ADJECTIVES = [
   "Epic","Legendary","Savage","Rad","Wild","Dope","Crazy","Insane","Lit","Boss",
@@ -29,6 +26,12 @@ const DO_NOT_PLURALIZE = new Set([
 
 // phrase + irregular plural map
 const PHRASE_PLURALS = new Map([
+  ["Party Animal", "Party Animals"],
+  ["Bookworm", "Bookworms"],
+  ["Flat Earther", "Flat Earthers"],
+  ["Milk Carton", "Milk Cartons"],
+  ["Smooth criminal", "Smooth criminals"],
+  ["Soul sister", "Soul sisters"],
   ["Cat King", "Cat Kings"],
   ["Litter Box", "Litter Boxes"],
   ["Sleeping Bag", "Sleeping Bags"],
@@ -66,7 +69,6 @@ const IRREGULAR_PLURALS = new Map([
 ]);
 
 const NOUNS = [
-  // Fun objects / food / chaos (NON-office)
   "Couch","Pillow","Party Animal","Kiwi","Rock","Banana","Pie","Lamp","Glove",
   "Toaster","Clown","Carpet","Bookworm","Book","Emu","Bicycle","Spider",
   "Bed","Nugget","Puppet","Hat","Bacon","Bagel","Backpack","Nacho","Cup",
@@ -82,27 +84,23 @@ const NOUNS = [
   "Pretzel","Corn Dog","Vortex","Panda","Bull","Penguin","Bee","Stranger","Gamer","Bunny","Lunchlady",
   "Dragon","Knight","Bandit","Clown","Hunk","Rascal",
 
-  // Trendy / Gen Z-ish nouns (phrases allowed)
   "Rizzler","Main Character","Side Quest","Glow Up","Vibe","Vibe Check","NPC","Meme",
   "Sigma","GigaChad","Skibidi","Chad","Goblin Mode","Gremlin","Chaos Gremlin",
   "Braincell","Goober","Lore","Plot Twist","Skill Issue","Touch Grass",
   "Snack","Slay","W","L","Yap","Yapper","Mood","Delulu","Ick",
   "Yeet","Drip","Receipts","Hot Take","Cringe",
 
-  // Group/team nouns (do-not-pluralize list handles these)
   "Cult","Overlords","Squad","Crew","Council","Pack","Clan","Guild","Horde","Mob",
   "Legion","Swarm","Gang","Alliance","Cartel","Syndicate","Cabal","Order",
   "Party","Tribe","Collective","Clique","Posse","Unit","Regime","Brotherhood","Sisterhood",
 
-  // Family / people
   "Mom","Dad","Cousin","Uncle","Aunt","Grandma","Grandpa","Nana","Papa",
-  "Sibling","Brother","Sister","Twin", "Sherlock", "Soul sister",
+  "Sibling","Brother","Sister","Twin","Sherlock","Soul sister",
   "Nephew","Niece","Godmother","Godfather","Umpa-Lumpa",
   "Roommate","Neighbor","Bestie","BFF","Frenemy",
   "Babysitter","Chaperone","Drama Kid","Band Kid","Gym Bro","Cat Mom","Dog Dad",
   "Snack Dealer","Chaos Child","Legend","Sleepyhead",
 
-  // Titles / ranks
   "King","Queen","Prince","Princess","Duke","Duchess","Baron","Baroness",
   "Emperor","Empress","Warlord","Overlord","Supreme Leader",
   "Captain","Commander","General","Marshal","Admiral",
@@ -114,33 +112,41 @@ const NOUNS = [
   "Chosen One","Gatekeeper","Time Traveler","Rift Walker","Void Caller"
 ];
 
-
 /* -------------------------
    DOM
 ------------------------- */
 
-const screenPick = document.getElementById("screenPick");
-const screenConfirm = document.getElementById("screenConfirm");
-const choicesEl = document.getElementById("choices");
-const refreshBtn = document.getElementById("refreshBtn");
-const submitBtn = document.getElementById("submitBtn");
-const restartBtn = document.getElementById("restartBtn");
+const screenPick   = document.getElementById("screenPick");
+const screenConfirm= document.getElementById("screenConfirm");
+const choicesEl    = document.getElementById("choices");
+const refreshBtn   = document.getElementById("refreshBtn");
+const submitBtn    = document.getElementById("submitBtn");
+const restartBtn   = document.getElementById("restartBtn");
 const pickedNameEl = document.getElementById("pickedName");
-const finalNameEl = document.getElementById("finalName");
-const pulsarEl = document.getElementById("pulsar");
+const finalNameEl  = document.getElementById("finalName");
+const pulsarEl     = document.getElementById("pulsar");
 
-// Safety: if any are missing, stop and tell you why
+// NEW (for copy modal + copy button)
+const copyBtn        = document.getElementById("copyBtn");
+const copyModal      = document.getElementById("copyModal");
+const copyModalClose = document.getElementById("copyModalClose");
+const copyModalText  = document.getElementById("copyModalText");
+
 const REQUIRED = {
   screenPick, screenConfirm, choicesEl, refreshBtn, submitBtn, restartBtn, pickedNameEl, finalNameEl, pulsarEl
 };
 for (const [k, v] of Object.entries(REQUIRED)) {
-  if (!v) {
-    console.error(`[TeamNameGen] Missing element ID: ${k}. Check your HTML IDs.`);
-  }
+  if (!v) console.error(`[TeamNameGen] Missing element ID: ${k}. Check your HTML IDs.`);
 }
 
-let selectedName = "";
+// Copy-related elements are optional BUT if you added them in HTML, they must exist:
+if (!copyBtn) console.warn("[TeamNameGen] Missing element ID: copyBtn (Copy button won't work).");
+if (!copyModal) console.warn("[TeamNameGen] Missing element ID: copyModal (Copy modal won't show).");
+if (!copyModalClose) console.warn("[TeamNameGen] Missing element ID: copyModalClose.");
+if (!copyModalText) console.warn("[TeamNameGen] Missing element ID: copyModalText.");
 
+let selectedName = "";
+let autoRefreshTimer = null;
 
 /* -------------------------
    HELPERS
@@ -181,8 +187,8 @@ function generateThreeUnique() {
 
 function setSelected(name) {
   selectedName = name;
-  pickedNameEl.textContent = name || "—";
-  submitBtn.disabled = !name;
+  if (pickedNameEl) pickedNameEl.textContent = name || "—";
+  if (submitBtn) submitBtn.disabled = !name;
 }
 
 function renderChoices() {
@@ -214,7 +220,6 @@ function playPulsarThen(fn) {
   pulsarEl.classList.remove("hidden");
   pulsarEl.style.animation = "none";
   // force reflow
-  // eslint-disable-next-line no-unused-expressions
   pulsarEl.offsetHeight;
   pulsarEl.style.animation = "";
 
@@ -224,6 +229,75 @@ function playPulsarThen(fn) {
   }, 650);
 }
 
+function openCopyModal() {
+  if (!copyModal) return;
+  copyModal.classList.remove("hidden");
+}
+
+function closeCopyModal() {
+  if (!copyModal) return;
+  copyModal.classList.add("hidden");
+}
+
+async function copyToClipboard(text) {
+  // Modern secure context path
+  if (navigator.clipboard && window.isSecureContext) {
+    await navigator.clipboard.writeText(text);
+    return true;
+  }
+
+  // Fallback (works on http/local file in many browsers)
+  const ta = document.createElement("textarea");
+  ta.value = text;
+  ta.setAttribute("readonly", "");
+  ta.style.position = "fixed";
+  ta.style.top = "-9999px";
+  ta.style.opacity = "0";
+  document.body.appendChild(ta);
+  ta.select();
+
+  let ok = false;
+  try {
+    ok = document.execCommand("copy");
+  } catch {
+    ok = false;
+  }
+  document.body.removeChild(ta);
+  return ok;
+}
+
+function startAutoRefreshCountdown() {
+  if (autoRefreshTimer) clearTimeout(autoRefreshTimer);
+
+  // Update modal text countdown (optional)
+  let seconds = 5;
+  if (copyModalText) {
+    copyModalText.textContent =
+      `Please close this pop-up and PASTE this TEAM-NAME into the Booking area! Auto-refreshing in ${seconds} seconds...`;
+  }
+
+  const tick = () => {
+    seconds -= 1;
+    if (seconds <= 0) {
+      // restart fully
+      playPulsarThen(() => {
+        closeCopyModal();
+        if (screenConfirm) screenConfirm.classList.add("hidden");
+        if (screenPick) screenPick.classList.remove("hidden");
+        renderChoices();
+      });
+      return;
+    }
+
+    if (copyModalText) {
+      copyModalText.textContent =
+        `Please close this pop-up and PASTE this TEAM-NAME into the Booking area! Auto-refreshing in ${seconds} seconds...`;
+    }
+    autoRefreshTimer = setTimeout(tick, 1000);
+  };
+
+  autoRefreshTimer = setTimeout(tick, 1000);
+}
 
 /* -------------------------
    EVENTS
@@ -239,9 +313,9 @@ if (submitBtn) {
   submitBtn.addEventListener("click", () => {
     if (!selectedName) return;
     playPulsarThen(() => {
-      finalNameEl.textContent = selectedName;
-      screenPick.classList.add("hidden");
-      screenConfirm.classList.remove("hidden");
+      if (finalNameEl) finalNameEl.textContent = selectedName;
+      if (screenPick) screenPick.classList.add("hidden");
+      if (screenConfirm) screenConfirm.classList.remove("hidden");
     });
   });
 }
@@ -249,10 +323,58 @@ if (submitBtn) {
 if (restartBtn) {
   restartBtn.addEventListener("click", () => {
     playPulsarThen(() => {
-      screenConfirm.classList.add("hidden");
-      screenPick.classList.remove("hidden");
+      closeCopyModal();
+      if (autoRefreshTimer) clearTimeout(autoRefreshTimer);
+      if (screenConfirm) screenConfirm.classList.add("hidden");
+      if (screenPick) screenPick.classList.remove("hidden");
       renderChoices();
     });
+  });
+}
+
+// NEW: Copy button behavior
+if (copyBtn) {
+  copyBtn.addEventListener("click", async () => {
+    const text = selectedName || (finalNameEl ? finalNameEl.textContent : "");
+    if (!text || text === "—") return;
+
+    try {
+      const ok = await copyToClipboard(text);
+
+      // Always show the message (even if fallback returns false, user still sees instructions)
+      if (copyModalText) {
+        copyModalText.textContent =
+          ok
+            ? `Please close this pop-up and PASTE this TEAM-NAME into the Booking area! Auto-refreshing in 5 seconds...`
+            : `Couldn’t auto-copy (browser blocked it). Please select and copy manually, then paste into the Booking area. Auto-refreshing in 5 seconds...`;
+      }
+
+      openCopyModal();
+      startAutoRefreshCountdown();
+    } catch (e) {
+      console.error("Copy failed:", e);
+      if (copyModalText) {
+        copyModalText.textContent =
+          `Couldn’t auto-copy (browser blocked it). Please select and copy manually, then paste into the Booking area. Auto-refreshing in 5 seconds...`;
+      }
+      openCopyModal();
+      startAutoRefreshCountdown();
+    }
+  });
+}
+
+// NEW: close modal button
+if (copyModalClose) {
+  copyModalClose.addEventListener("click", () => {
+    closeCopyModal();
+    // keep the 5-second timer running even if they close it (as requested)
+  });
+}
+
+// NEW: clicking backdrop closes modal
+if (copyModal) {
+  copyModal.addEventListener("click", (e) => {
+    if (e.target === copyModal) closeCopyModal();
   });
 }
 
