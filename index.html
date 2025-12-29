@@ -1,3 +1,4 @@
+<!-- index.html -->
 <!doctype html>
 <html lang="en">
 <head>
@@ -7,23 +8,28 @@
   <link rel="stylesheet" href="styles.css"/>
 </head>
 <body>
-  <!-- Optional background video (drop rift.mp4 in same folder). If you don’t want video, delete this block. -->
   <video class="bg-video" autoplay muted loop playsinline>
     <source src="rift.mp4" type="video/mp4" />
   </video>
   <div class="bg-overlay"></div>
 
   <main class="wrap">
-    <!-- Pulsar flash overlay -->
     <div id="pulsar" class="pulsar hidden"></div>
 
-    <!-- COPY MODAL (NEW) -->
+    <!-- COPY MODAL -->
     <div id="copyModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="copyModalTitle">
       <div class="modal-card">
         <h2 id="copyModalTitle" class="modal-title">Copy complete!</h2>
         <p id="copyModalText" class="modal-text">
           Please close this pop-up and PASTE this TEAM-NAME into the Booking area! Auto-refreshing in 5 seconds...
         </p>
+
+        <!-- Optional manual select fallback on mobile/webview -->
+        <div class="modal-snippet">
+          <div class="modal-snippet-label">Team name:</div>
+          <input id="copyModalInput" class="modal-snippet-input" readonly value="" />
+        </div>
+
         <button id="copyModalClose" class="btn btn-primary" type="button">Close</button>
       </div>
     </div>
